@@ -1,16 +1,54 @@
 # Stocker
 
-## Executar em ambiente de desenvolvimento
+Stocker lets you keep track of your investments, as well of the stocks in your interest.
 
-### Pré-requisitos
-* [expo-cli](https://www.npmjs.com/package/expo-cli) v3.22.3
-* [Node.js](https://github.com/nvm-sh/nvm) v14.0.0
-* Emulador de dispositivo móvel (Android ou iOS) ou dispositivo Android conectado via USB.
+> Design based on Samsung's One UI
 
-### Passo-a-passo
-1. Clonar o repositório.
-2. Abrir o emulador de dispositivo móvel ou conectar um dispositivo Android.
-3. Acessar a pasta-raíz do projeto.
-4. Instalar as dependências com `npm install`.
-5. Executar o projeto com `expo start`. Um [servidor local](localhost:19002) será aberto.
-6. Acessar o servidor pelo navegador e selecionar ***run on Android device/emulator*** ou ***run on iOS simulator***, na barra lateral.
+> Developed using React Native and Expo
+
+> Market data acquired from the Google Finance API
+
+# Development Environment
+
+## Environment Setup
+
+The following requirements must be available:
+
+- Mobile device emulator (Android/iOS) or an Android device connected via USB.
+- [expo-cli](https://www.npmjs.com/package/expo-cli) _v4.0.17_
+- [Node.js](https://github.com/nvm-sh/nvm) _v14.13.1_
+
+### Android Studio (for device emulation)
+
+First, install Android Studio.
+
+```shell
+sudo snap install android-studio --classic
+```
+
+Then, open the device emulator, by opening Android Studio, selecting `Configure > AVD Manager` and running the default Pixel virtual device.
+
+!['AVD Manager' location](images/Installation-Setup/Android-Studio-AVD.png)
+
+### NodeJS
+
+It's recommended to use the [Node Version Manager (nvm)](https://github.com/nvm-sh/nvm) to install Node. The Node version used is `v14.13.1`.
+
+### Expo CLI
+
+To install the [expo CLI](https://docs.expo.io/), use:
+
+```shell
+npm install --global expo-cli
+```
+
+## Project Setup
+
+1. Clone the repository.
+2. Open the device emulator (or connect an Android device).
+3. Open the project's root directory in your terminal.
+4. Install all dependencies with `npm install`.
+5. Run the project with `expo start`. A [local server](localhost:19002) will open.
+6. Using a web browser, access the server and select **_run on Android device/emulator_** or **_run on iOS simulator_**, on the sidebar.
+
+The app will be started in the emulated (or plugged) device.
