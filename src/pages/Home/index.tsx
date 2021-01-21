@@ -1,16 +1,8 @@
-import React from 'react';
-import { Text } from 'react-native';
-import styled from 'styled-components/native';
+import React from "react";
+import styled from "styled-components/native";
+
+import { AppBarPage } from "../../components/Pages";
 
 export default function Home() {
-  return (
-    <Page>
-      <Text>Home</Text>
-    </Page>
-  );
+  return <AppBarPage title="Home"></AppBarPage>;
 }
-
-const Page = styled.View`
-  min-height: 100%;
-  background-color: #102535;
-`;

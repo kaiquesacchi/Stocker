@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@types/styled-components-react-native": "^5.1.0",
     "@types/react-router-native": "^5.1.0",
     "@types/styled-components": "^5.1.7",
     "expo": "^40.0.0",

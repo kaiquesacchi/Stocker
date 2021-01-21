@@ -1,8 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-
-import Router from './src/pages';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import Router from "./src/pages";
 
 export default function App() {
-  return <Router />;
+  return (
+    <React.Fragment>
+      <StatusBar style="light" />
+      <Router />
+    </React.Fragment>
+  );
 }
