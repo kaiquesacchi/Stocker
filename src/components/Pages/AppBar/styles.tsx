@@ -52,7 +52,6 @@ const SCSmallHeader = styled.Text<iSCSmallHeader>`
 
 const SCPage = styled.ScrollView`
   width: 100%;
-  min-height: 100%;
   background-color: black;
   display: flex;
   flex-direction: column;
