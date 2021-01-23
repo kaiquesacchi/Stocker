@@ -7,7 +7,7 @@ import { AppBarPage } from "../../components/Pages";
 export default function Home() {
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Home"></AppBarPage>
+      <AppBarPage title="Resumo"></AppBarPage>
       <Navigation />
     </View>
   );

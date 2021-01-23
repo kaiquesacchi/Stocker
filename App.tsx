@@ -1,12 +1,13 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import Router from "./src/pages";
+import { ActiveTabContextProvider } from "./src/context/ActiveTab";
 
 export default function App() {
   return (
-    <React.Fragment>
+    <ActiveTabContextProvider>
       <StatusBar style="light" />
       <Router />
-    </React.Fragment>
+    </ActiveTabContextProvider>
   );
 }

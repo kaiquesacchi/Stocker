@@ -4,10 +4,10 @@ import { Navigation } from "../../components/BottomBars";
 
 import { AppBarPage } from "../../components/Pages";
 
-export default function StockDetails() {
+export default function MyWallet() {
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Pesquisar Ação"></AppBarPage>
+      <AppBarPage title="Minha Carteira"></AppBarPage>
       <Navigation />
     </View>
   );

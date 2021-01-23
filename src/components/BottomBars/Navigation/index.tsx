@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import { useHistory } from "react-router-native";
 import styled from "styled-components/native";
+import useActiveTab from "../../../context/ActiveTab";
 
 const SCBottomBar = styled.ScrollView`
   background-color: black;
@@ -20,23 +22,30 @@ const SCTab = styled.Text<iSCTab>`
   padding-bottom: 5px;
 `;
 
-const tabs = {
-  Resumo: "/summary",
-  "Minha Carteira": "/my-wallet/0",
-  "Pesquisar Ações": "/search-stock",
+interface iTabs {
+  [key: string]: string;
+}
+const tabs: iTabs = {
+  Início: "/",
+  "Minha Carteira": "/my-wallet/",
+  "Pesquisar Ações": "/stock-details/",
 };
 
 export default function Navigation() {
-  const [activeTab, setActiveTab] = useState(Object.keys(tabs)[0]);
+  const [activeTab, setActiveTab] = useActiveTab();
+  const history = useHistory();
 
-  const handlePress = (tabName: string) => {
-    if (tabName !== activeTab) setActiveTab(tabName);
+  const handlePress = (tabPath: string) => {
+    if (tabPath !== activeTab) {
+      setActiveTab(tabPath);
+      history.replace(tabPath);
+    }
   };
 
   return (
     <SCBottomBar horizontal contentContainerStyle={{ flex: 1, justifyContent: "space-around" }}>
       {Object.keys(tabs).map((tabName) => (
-        <SCTab key={tabName} onPress={() => handlePress(tabName)} active={tabName === activeTab}>
+        <SCTab key={tabName} onPress={() => handlePress(tabs[tabName])} active={tabs[tabName] === activeTab}>
           {tabName}
         </SCTab>
       ))}
