@@ -15,7 +15,8 @@ export default function AppBarPage({ title, children }: iProps) {
   const [headerOpacity, setHeaderOpacity] = useState(0);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const pageYOffset = event.nativeEvent.contentOffset.y;
+    let pageYOffset = event.nativeEvent.contentOffset.y;
+    if (pageYOffset < 0) pageYOffset = 0; // When gliding upwards, may turn negative for a few frames.
     if (pageYOffset <= bannerHeight) {
       setBannerPadding(pageYOffset);
       setHeaderOpacity(1 - (bannerHeight - pageYOffset) / (pageYOffset + 0.1));
