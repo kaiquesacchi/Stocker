@@ -23,7 +23,7 @@ const renderFunction = (item: any, index: number) => (
 export default function Home() {
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Resumo">
+      <AppBarPage title="Resumo" hasNavigationBar>
         <ListFocusBlock title="Totais" data={data} renderFunction={renderFunction} />
       </AppBarPage>
       <Navigation />

@@ -4,10 +4,11 @@ import { SCBanner, SCStickyHeader, SCBigHeader, SCContent, SCMaterialIcons, SCPa
 
 interface iProps {
   title: string;
+  hasNavigationBar?: boolean;
   children?: React.ReactNode;
 }
 
-export default function AppBarPage({ title, children }: iProps) {
+export default function AppBarPage({ title, hasNavigationBar, children }: iProps) {
   const bannerHeight = 280;
 
   const [bannerPadding, setBannerPadding] = useState(0);
@@ -37,7 +38,7 @@ export default function AppBarPage({ title, children }: iProps) {
         <SCMaterialIcons name="arrow-back-ios" />
         <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
       </SCStickyHeader>
-      <SCContent>{children}</SCContent>
+      <SCContent hasNavigationBar={hasNavigationBar}>{children}</SCContent>
     </SCPage>
   );
 }

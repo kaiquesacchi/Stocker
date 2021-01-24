@@ -57,8 +57,15 @@ const SCPage = styled.ScrollView`
   flex-direction: column;
 `;
 
-const SCContent = styled.View`
-  min-height: ${() => Dimensions.get("window").height - 95 + "px"};
+interface iSCContent {
+  hasNavigationBar?: boolean;
+}
+const SCContent = styled.View<iSCContent>`
+  min-height: ${(props) => {
+    let result = Dimensions.get("window").height - 93.5;
+    if (props.hasNavigationBar) result -= 44.7;
+    return result + "px";
+  }};
 `;
 
 export { SCBanner, SCStickyHeader, SCBigHeader, SCContent, SCMaterialIcons, SCPage, SCSmallHeader };
