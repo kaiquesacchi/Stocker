@@ -14,9 +14,14 @@ const SCBanner = styled.View<iSCBannerProps>`
   height: ${(props) => props.height + "px"};
 `;
 
+const SCTopMargin = styled.View`
+  width: 100%;
+  height: 20px;
+`;
+
 const SCStickyHeader = styled.View`
   background-color: black;
-  padding: 40px 20px 20px;
+  padding: 20px 20px;
 
   display: flex;
   flex-direction: row;
@@ -38,7 +43,10 @@ const SCBigHeader = styled.Text<iSCBigHeaderProps>`
   opacity: ${(props) => props.opacity};
   margin-top: ${(props) => props.marginTop + "px"};
 `;
-
+const SCAltBanner = styled.View<iSCBigHeaderProps>`
+  opacity: ${(props) => props.opacity};
+  margin-top: ${(props) => props.marginTop + "px"};
+`;
 interface iSCSmallHeader {
   opacity: number;
 }
@@ -61,6 +69,7 @@ interface iSCContent {
   hasNavigationBar?: boolean;
 }
 const SCContent = styled.View<iSCContent>`
+  background-color: black;
   min-height: ${(props) => {
     let result = Dimensions.get("window").height - 93.5;
     if (props.hasNavigationBar) result -= 44.7;
@@ -68,4 +77,14 @@ const SCContent = styled.View<iSCContent>`
   }};
 `;
 
-export { SCBanner, SCStickyHeader, SCBigHeader, SCContent, SCMaterialIcons, SCPage, SCSmallHeader };
+export {
+  SCBanner,
+  SCTopMargin,
+  SCStickyHeader,
+  SCBigHeader,
+  SCAltBanner,
+  SCContent,
+  SCMaterialIcons,
+  SCPage,
+  SCSmallHeader,
+};

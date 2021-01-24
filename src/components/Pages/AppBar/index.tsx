@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
-import { SCBanner, SCStickyHeader, SCBigHeader, SCContent, SCMaterialIcons, SCPage, SCSmallHeader } from "./styles";
+import {
+  SCBanner,
+  SCTopMargin,
+  SCStickyHeader,
+  SCBigHeader,
+  SCAltBanner,
+  SCContent,
+  SCMaterialIcons,
+  SCPage,
+  SCSmallHeader,
+} from "./styles";
 
 interface iProps {
   title: string;
+  altBanner?: React.ReactNode;
   hasNavigationBar?: boolean;
   children?: React.ReactNode;
 }
 
-export default function AppBarPage({ title, hasNavigationBar, children }: iProps) {
+export default function AppBarPage({ title, altBanner, hasNavigationBar, children }: iProps) {
   const bannerHeight = 280;
 
   const [bannerPadding, setBannerPadding] = useState(0);
@@ -28,11 +39,18 @@ export default function AppBarPage({ title, hasNavigationBar, children }: iProps
   };
 
   return (
-    <SCPage onScroll={handleScroll} stickyHeaderIndices={[1]}>
+    <SCPage onScroll={handleScroll} stickyHeaderIndices={[0, 2]}>
+      <SCTopMargin />
       <SCBanner height={bannerHeight}>
-        <SCBigHeader opacity={bannerOpacity} marginTop={bannerPadding}>
-          {title}
-        </SCBigHeader>
+        {altBanner ? (
+          <SCAltBanner opacity={bannerOpacity} marginTop={bannerPadding}>
+            {altBanner}
+          </SCAltBanner>
+        ) : (
+          <SCBigHeader opacity={bannerOpacity} marginTop={bannerPadding}>
+            {title}
+          </SCBigHeader>
+        )}
       </SCBanner>
       <SCStickyHeader>
         <SCMaterialIcons name="arrow-back-ios" />
