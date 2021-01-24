@@ -14,12 +14,13 @@ import {
 
 interface iProps {
   title: string;
+  backButton?: boolean;
   altBanner?: React.ReactNode;
   hasNavigationBar?: boolean;
   children?: React.ReactNode;
 }
 
-export default function AppBarPage({ title, altBanner, hasNavigationBar, children }: iProps) {
+export default function AppBarPage({ title, backButton, altBanner, hasNavigationBar, children }: iProps) {
   const bannerHeight = 280;
 
   const [bannerPadding, setBannerPadding] = useState(0);
@@ -53,7 +54,7 @@ export default function AppBarPage({ title, altBanner, hasNavigationBar, childre
         )}
       </SCBanner>
       <SCStickyHeader>
-        <SCMaterialIcons name="arrow-back-ios" />
+        {backButton ? <SCMaterialIcons name="arrow-back-ios" /> : <React.Fragment />}
         <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
       </SCStickyHeader>
       <SCContent hasNavigationBar={hasNavigationBar}>{children}</SCContent>

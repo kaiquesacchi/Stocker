@@ -30,6 +30,7 @@ const SCStickyHeader = styled.View`
 
 const SCMaterialIcons = styled(MaterialIcons)`
   font-size: 25px;
+  margin-right: 10px;
   color: white;
 `;
 
@@ -53,7 +54,6 @@ interface iSCSmallHeader {
 const SCSmallHeader = styled.Text<iSCSmallHeader>`
   color: white;
   font-size: 25px;
-  margin-left: 10px;
 
   opacity: ${(props) => props.opacity};
 `;

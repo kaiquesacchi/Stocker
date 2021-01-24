@@ -3,6 +3,13 @@ import styled from "styled-components/native";
 interface iSCListItem {
   first?: boolean;
 }
+const SCHorizontalListItem = styled.View<iSCListItem>`
+  border-left-width: 1px;
+  width: 33.3%;
+  border-color: ${(props) => (props.first ? "#0000" : "#6665")};
+  padding-left: ${(props) => (props.first ? "0" : "10px")};
+`;
+
 const SCListItem = styled.View<iSCListItem>`
   border-top-width: 1px;
   border-color: ${(props) => (props.first ? "#0000" : "#6665")};
@@ -11,11 +18,11 @@ const SCListItem = styled.View<iSCListItem>`
 `;
 
 const SCTitle = styled.Text`
-  font-size: 14px;
+  font-size: 16px;
   color: white;
 `;
 const SCValue = styled.Text`
   color: #71c7bb;
 `;
 
-export { SCListItem, SCTitle, SCValue };
+export { SCHorizontalListItem, SCListItem, SCTitle, SCValue };
