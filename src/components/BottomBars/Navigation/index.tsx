@@ -6,7 +6,9 @@ import useActiveTab from "../../../context/ActiveTab";
 const SCBottomBar = styled.ScrollView`
   background-color: black;
   display: flex;
-  padding: 10px;
+  padding: 0 10px 10px;
+  min-height: 44.7px;
+  max-height: 44.7px;
 `;
 
 interface iSCTab {
@@ -16,10 +18,10 @@ const SCTab = styled.Text<iSCTab>`
   color: ${(props) => (props.active ? "#71c7bb" : "white")};
   font-size: 16px;
   border-radius: 0.1px;
-  border-style: ${(props) => (props.active ? "dotted" : "solid")};
+  border-style: solid;
   border-color: ${(props) => (props.active ? "#71c7bb" : "#0000")};
   border-bottom-width: ${(props) => (props.active ? "1px" : "0px")};
-  padding-bottom: 5px;
+  padding: 10px 0 5px;
 `;
 
 interface iTabs {
