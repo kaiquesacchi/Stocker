@@ -1,4 +1,4 @@
 import AppBarPage from "./AppBar";
-import SimplePage from "./Simple";
+import BasePage from "./Base";
 
-export { AppBarPage, SimplePage };
+export { AppBarPage, BasePage };

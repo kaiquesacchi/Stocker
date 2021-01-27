@@ -2,12 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 
-import { AppBarPage } from "../../components/Pages";
+import SearchPage from "../../components/Pages/Search";
 
-export default function StockDetails() {
+export default function SearchStock() {
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Pesquisar Ação"></AppBarPage>
+      <SearchPage></SearchPage>
       <Navigation />
     </View>
   );

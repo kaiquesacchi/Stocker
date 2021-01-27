@@ -3,16 +3,15 @@ import styled from "styled-components/native";
 
 const SCPage = styled.ScrollView`
   width: 100%;
-  min-height: 100%;
   background-color: black;
-  display: flex;
   flex-direction: column;
+  flex-grow: 1;
 `;
 
 interface iProps {
   children?: React.ReactNode;
 }
 
-export default function SimplePage({ children }: iProps) {
+export default function BasePage({ children }: iProps) {
   return <SCPage>{children}</SCPage>;
 }
