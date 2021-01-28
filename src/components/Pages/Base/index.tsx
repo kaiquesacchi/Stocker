@@ -1,4 +1,5 @@
 import React from "react";
+import { ScrollViewProps } from "react-native";
 import styled from "styled-components/native";
 
 const SCPage = styled.ScrollView`
@@ -8,10 +9,10 @@ const SCPage = styled.ScrollView`
   flex-grow: 1;
 `;
 
-interface iProps {
+interface iProps extends ScrollViewProps {
   children?: React.ReactNode;
 }
 
-export default function BasePage({ children }: iProps) {
-  return <SCPage>{children}</SCPage>;
+export default function BasePage({ children, ...rest }: iProps) {
+  return <SCPage {...rest}>{children}</SCPage>;
 }

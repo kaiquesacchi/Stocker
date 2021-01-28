@@ -30,7 +30,7 @@ interface iTabs {
 const tabs: iTabs = {
   Início: "/",
   "Minha Carteira": "/my-wallet/",
-  "Pesquisar Ações": "/stock-details/",
+  "Pesquisar Ações": "/search-stocks/",
 };
 
 export default function Navigation() {

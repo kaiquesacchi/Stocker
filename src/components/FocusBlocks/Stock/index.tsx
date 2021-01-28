@@ -1,6 +1,7 @@
 import React from "react";
 import BaseFocusBlock, { iProps as iPropsBase } from "../Base";
 import styled from "styled-components/native";
+import { useHistory } from "react-router-native";
 
 interface iSCFontColor {
   fontColor: string;
@@ -72,8 +73,13 @@ interface iProps extends iPropsBase {
 }
 
 export default function StockFocusBlock({ stockData, fontColor, ...rest }: iProps) {
+  const history = useHistory();
+
+  const handleRedirect = (stockSymbol: string) => {
+    history.push("/stock-details/" + stockSymbol);
+  };
   return (
-    <BaseFocusBlock {...rest}>
+    <BaseFocusBlock {...rest} onPress={() => handleRedirect(stockData.symbol)}>
       <SCBody>
         <SCMainInfo fontColor={fontColor}>
           <SCMainLeft>

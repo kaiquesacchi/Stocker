@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import { useHistory } from "react-router-native";
 import {
   SCBanner,
   SCTopMargin,
@@ -21,6 +22,12 @@ interface iProps {
 }
 
 export default function AppBarPage({ title, backButton, altBanner, hasNavigationBar, children }: iProps) {
+  const history = useHistory();
+
+  const handleBackButton = () => {
+    history.goBack();
+  };
+
   const bannerHeight = 280;
 
   const [bannerPadding, setBannerPadding] = useState(0);
@@ -54,7 +61,7 @@ export default function AppBarPage({ title, backButton, altBanner, hasNavigation
         )}
       </SCBanner>
       <SCStickyHeader>
-        {backButton ? <SCMaterialIcons name="arrow-back-ios" /> : <React.Fragment />}
+        {backButton ? <SCMaterialIcons name="arrow-back-ios" onPress={handleBackButton} /> : <React.Fragment />}
         <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
       </SCStickyHeader>
       <SCContent hasNavigationBar={hasNavigationBar}>{children}</SCContent>
