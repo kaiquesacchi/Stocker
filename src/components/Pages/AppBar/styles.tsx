@@ -23,9 +23,27 @@ const SCStickyHeader = styled.View`
   background-color: black;
   padding: 20px 20px;
 
-  display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+`;
+
+const SCStickyHeaderTitle = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+const SCStickyHeaderButtons = styled.View`
+  flex-direction: row;
+`;
+
+interface iSCSmallHeader {
+  opacity: number;
+}
+const SCSmallHeader = styled.Text<iSCSmallHeader>`
+  color: white;
+  font-size: 25px;
+
+  opacity: ${(props) => props.opacity};
 `;
 
 const SCMaterialIcons = styled(MaterialIcons)`
@@ -47,15 +65,6 @@ const SCBigHeader = styled.Text<iSCBigHeaderProps>`
 const SCAltBanner = styled.View<iSCBigHeaderProps>`
   opacity: ${(props) => props.opacity};
   margin-top: ${(props) => props.marginTop + "px"};
-`;
-interface iSCSmallHeader {
-  opacity: number;
-}
-const SCSmallHeader = styled.Text<iSCSmallHeader>`
-  color: white;
-  font-size: 25px;
-
-  opacity: ${(props) => props.opacity};
 `;
 
 const SCPage = styled.ScrollView`
@@ -86,4 +95,6 @@ export {
   SCMaterialIcons,
   SCPage,
   SCSmallHeader,
+  SCStickyHeaderTitle,
+  SCStickyHeaderButtons,
 };

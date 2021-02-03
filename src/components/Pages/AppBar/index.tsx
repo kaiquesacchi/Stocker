@@ -11,17 +11,25 @@ import {
   SCMaterialIcons,
   SCPage,
   SCSmallHeader,
+  SCStickyHeaderTitle,
+  SCStickyHeaderButtons,
 } from "./styles";
+
+export interface iButton {
+  name: string;
+  onPress: () => void;
+}
 
 interface iProps {
   title: string;
   backButton?: boolean;
   altBanner?: React.ReactNode;
   hasNavigationBar?: boolean;
+  buttons?: iButton[];
   children?: React.ReactNode;
 }
 
-export default function AppBarPage({ title, backButton, altBanner, hasNavigationBar, children }: iProps) {
+export default function AppBarPage({ title, backButton, altBanner, hasNavigationBar, buttons, children }: iProps) {
   const history = useHistory();
 
   const handleBackButton = () => {
@@ -61,8 +69,15 @@ export default function AppBarPage({ title, backButton, altBanner, hasNavigation
         )}
       </SCBanner>
       <SCStickyHeader>
-        {backButton ? <SCMaterialIcons name="arrow-back-ios" onPress={handleBackButton} /> : <React.Fragment />}
-        <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
+        <SCStickyHeaderTitle>
+          {backButton ? <SCMaterialIcons name="arrow-back-ios" onPress={handleBackButton} /> : <React.Fragment />}
+          <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
+        </SCStickyHeaderTitle>
+        <SCStickyHeaderButtons>
+          {buttons?.map((button) => (
+            <SCMaterialIcons name={button.name} onPress={button.onPress} />
+          ))}
+        </SCStickyHeaderButtons>
       </SCStickyHeader>
       <SCContent hasNavigationBar={hasNavigationBar}>{children}</SCContent>
     </SCPage>
