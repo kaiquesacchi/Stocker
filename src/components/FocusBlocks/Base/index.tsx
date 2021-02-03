@@ -24,7 +24,7 @@ export default function BaseFocusBlock({ title, children, onPress, ...rest }: iP
   return (
     <React.Fragment>
       {title ? <SCTitle>{title}</SCTitle> : <React.Fragment />}
-      <SCBody {...rest} {...onPress} activeOpacity={onPress ? 0.5 : 1}>
+      <SCBody {...rest} onPress={onPress} activeOpacity={onPress ? 0.5 : 1}>
         {children}
       </SCBody>
     </React.Fragment>
