@@ -74,8 +74,8 @@ export default function AppBarPage({ title, backButton, altBanner, hasNavigation
           <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
         </SCStickyHeaderTitle>
         <SCStickyHeaderButtons>
-          {buttons?.map((button) => (
-            <SCMaterialIcons name={button.name} onPress={button.onPress} />
+          {buttons?.map((button, index) => (
+            <SCMaterialIcons key={index} name={button.name} onPress={button.onPress} />
           ))}
         </SCStickyHeaderButtons>
       </SCStickyHeader>
