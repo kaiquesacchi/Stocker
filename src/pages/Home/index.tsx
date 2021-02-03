@@ -3,11 +3,12 @@ import { Dimensions, View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 import ListFocusBlock from "../../components/FocusBlocks/List";
 
-import { AppBarPage } from "../../components/Pages";
+import AppBarPage, { iButton } from "../../components/Pages/AppBar";
 
 import { SCHorizontalListItem, SCListItem, SCTitle, SCValue } from "./styles";
 
 import { ProgressChart } from "react-native-chart-kit";
+import { getAllData } from "../../services/GoogleFinanceAPI";
 
 /* Chart settings. */
 const chartData = {
@@ -66,9 +67,15 @@ const summaryRenderFunction = (item: iSummaryDataItem, index: number) => (
 /* End of Summary Info. */
 
 export default function Home() {
+  const buttons: iButton[] = [
+    {
+      name: "cached",
+      onPress: getAllData,
+    },
+  ];
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Resumo" hasNavigationBar altBanner={altBanner}>
+      <AppBarPage title="Resumo" hasNavigationBar altBanner={altBanner} buttons={buttons}>
         <ListFocusBlock horizontal data={legendData} renderFunction={legendRenderFunction} />
         <ListFocusBlock title="Totais" data={summaryData} renderFunction={summaryRenderFunction} />
       </AppBarPage>
