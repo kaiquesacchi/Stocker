@@ -7,6 +7,7 @@ import BasePage from "../Base";
 interface iProps {
   suggestions: any[];
   suggestionRenderFunction: (item: any, index: number) => React.ReactNode;
+  onChangeText: (text: string) => void;
   children?: React.ReactNode;
 }
 
@@ -21,12 +22,15 @@ const SCTextInput = styled.TextInput`
   font-size: 16px;
 `;
 
-function SearchPage({ suggestions, suggestionRenderFunction, children }: iProps) {
+function SearchPage({ suggestions, suggestionRenderFunction, onChangeText, children }: iProps) {
   return (
     <BasePage stickyHeaderIndices={[0]}>
       <SCSearchBar>
         <BaseFocusBlock>
-          <SCTextInput placeholder="Pesquise por nome ou símbolo" placeholderTextColor="#fff8"></SCTextInput>
+          <SCTextInput
+            placeholder="Pesquise por nome ou símbolo"
+            placeholderTextColor="#fff8"
+            onChangeText={onChangeText}></SCTextInput>
         </BaseFocusBlock>
       </SCSearchBar>
       <ListFocusBlock data={suggestions} renderFunction={suggestionRenderFunction} />

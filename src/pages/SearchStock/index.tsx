@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer, useState } from "react";
 import { View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 
@@ -6,6 +6,7 @@ import SearchPage from "../../components/Pages/Search";
 
 import styled from "styled-components/native";
 import { useHistory } from "react-router-native";
+import StockData from "../../controllers/StockData/StockData";
 
 interface iSCListItem {
   first?: boolean;
@@ -27,6 +28,23 @@ const SCNameText = styled.Text`
 
 export default function SearchStock() {
   const history = useHistory();
+
+  const allStocks = StockData.getAllAvailable();
+  const [searchPredictions, setSearchPredictions] = useState<iStock[]>([]);
+
+  const reducer = (oldValue: string, newValue: string) => {
+    const firstLetter = newValue.slice(0, 1).toUpperCase();
+    if (!(firstLetter in allStocks)) {
+      setSearchPredictions([]);
+    } else {
+      const dictionary = Object.keys(allStocks[firstLetter]);
+      const options = dictionary.filter((value) => value.startsWith(newValue.toUpperCase()));
+      setSearchPredictions(options.map((option) => ({ symbol: option, companyName: dictionary[option] })));
+    }
+    return newValue;
+  };
+  const [searched, dispatchForSearched] = useReducer(reducer, "");
+
   const handleRedirect = (symbol: string) => {
     history.push("/stock-details/" + symbol);
   };
@@ -34,21 +52,6 @@ export default function SearchStock() {
     symbol: string;
     companyName: string;
   }
-
-  const searchPredictions: iStock[] = [
-    { symbol: "ABCD4", companyName: "Empresa A. B." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-    { symbol: "EFGH3", companyName: "Empresa E. F." },
-  ];
 
   const renderFunction = (item: iStock, index: number) => (
     <SCItemList key={index} first={index === 0} onPress={() => handleRedirect(item.symbol)}>
@@ -59,7 +62,10 @@ export default function SearchStock() {
 
   return (
     <View style={{ flex: 1 }}>
-      <SearchPage suggestionRenderFunction={renderFunction} suggestions={searchPredictions}></SearchPage>
+      <SearchPage
+        suggestionRenderFunction={renderFunction}
+        suggestions={searchPredictions}
+        onChangeText={dispatchForSearched}></SearchPage>
       <Navigation />
     </View>
   );

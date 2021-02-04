@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ListFocusBlock from "../../components/FocusBlocks/List";
 import { AppBarPage } from "../../components/Pages";
 import styled from "styled-components/native";
+import StockData from "../../controllers/StockData/StockData";
+import { useHistory } from "react-router-native";
 
 interface iSCListItem {
   first?: boolean;
@@ -20,32 +22,48 @@ const SCNameText = styled.Text`
   color: #71c7bb;
   font-size: 14px;
 `;
+interface iStock {
+  Symbol: string;
+  Name: string;
+  Price: string;
+  Change: string;
+  "P/E": string;
+  EPS: string;
+  High: string;
+  Low: string;
+}
 
 export default function StockDetails({ match }: any) {
-  const symbol = match.params.stockSymbol;
+  const history = useHistory();
 
-  interface iStock {
-    symbol: string;
-    company_name: string;
-    price: string;
-    change: string;
-    pe: string;
-    eps: string;
-    high: string;
-    low: string;
-  }
+  const [data, setData] = useState<iStock>({
+    Symbol: "",
+    Name: "",
+    Price: "",
+    Change: "",
+    "P/E": "",
+    EPS: "",
+    High: "",
+    Low: "",
+  });
 
-  const data: any = {
-    symbol: "ABCD4",
-    company_name: "Empresa A. B.",
-    price: "R$22,30",
-    change: "2%",
-    pe: "6,75",
-    eps: "1,3",
-    high: "R$23,40",
-    low: "R$18,13",
-  };
-  const renderFunction = (key: any, index: number) => (
+  useEffect(() => {
+    const symbol = match.params.stockSymbol;
+    StockData.getBySymbol(symbol)
+      .then((response) => {
+        if (response === null) throw new Error();
+        setData(JSON.parse(response as string));
+      })
+      .catch(() => {
+        alert("Ação não encontrada.");
+        history.goBack();
+      });
+  }, [history]);
+
+  const renderFunction = (
+    key: "Symbol" | "Name" | "Price" | "Change" | "P/E" | "EPS" | "High" | "Low",
+    index: number
+  ) => (
     <SCItemList key={index} first={index === 0}>
       <SCSymbolText>{key}</SCSymbolText>
       <SCNameText>{data[key]}</SCNameText>
@@ -53,7 +71,7 @@ export default function StockDetails({ match }: any) {
   );
 
   return (
-    <AppBarPage title={symbol} backButton>
+    <AppBarPage title={data.Symbol} backButton>
       <ListFocusBlock data={Object.keys(data)} renderFunction={renderFunction} />
     </AppBarPage>
   );
