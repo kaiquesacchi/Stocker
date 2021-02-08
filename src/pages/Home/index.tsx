@@ -3,7 +3,7 @@ import { Dimensions, View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 import ListFocusBlock from "../../components/FocusBlocks/List";
 
-import AppBarPage, { iButton } from "../../components/Pages/AppBar";
+import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
 
 import { SCHorizontalListItem, SCListItem, SCTitle, SCValue } from "./styles";
 
@@ -75,10 +75,10 @@ export default function Home() {
   ];
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Resumo" hasNavigationBar altBanner={altBanner} buttons={buttons}>
+      <AppBarLayout title="Resumo" hasNavigationBar altBanner={altBanner} buttons={buttons}>
         <ListFocusBlock horizontal data={legendData} renderFunction={legendRenderFunction} />
         <ListFocusBlock title="Totais" data={summaryData} renderFunction={summaryRenderFunction} />
-      </AppBarPage>
+      </AppBarLayout>
       <Navigation />
     </View>
   );

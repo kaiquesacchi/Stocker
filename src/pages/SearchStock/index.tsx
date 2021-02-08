@@ -2,7 +2,7 @@ import React, { useReducer, useState } from "react";
 import { View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 
-import SearchPage from "../../components/Pages/Search";
+import SearchLayout from "../../components/Layouts/Search";
 
 import { useHistory } from "react-router-native";
 import StockData from "../../controllers/StockData/StockData";
@@ -45,7 +45,7 @@ export default function SearchStock() {
 
   return (
     <View style={{ flex: 1 }}>
-      <SearchPage
+      <SearchLayout
         suggestionRenderFunction={renderFunction}
         suggestions={searchPredictions}
         onChangeText={dispatchForSearched}

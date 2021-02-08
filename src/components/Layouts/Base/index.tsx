@@ -13,6 +13,6 @@ interface iProps extends ScrollViewProps {
   children?: React.ReactNode;
 }
 
-export default function BasePage({ children, ...rest }: iProps) {
+export default function BaseLayout({ children, ...rest }: iProps) {
   return <SCPage {...rest}>{children}</SCPage>;
 }

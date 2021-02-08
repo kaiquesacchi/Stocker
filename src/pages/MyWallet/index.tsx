@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 import StockFocusBlock, { iStockData } from "../../components/FocusBlocks/Stock";
 
-import { AppBarPage } from "../../components/Pages";
+import AppBarLayout from "../../components/Layouts/AppBar";
 
 export default function MyWallet() {
   const stockDataList: iStockData[] = [
@@ -31,11 +31,11 @@ export default function MyWallet() {
 
   return (
     <View style={{ flex: 1 }}>
-      <AppBarPage title="Minha Carteira" hasNavigationBar>
+      <AppBarLayout title="Minha Carteira" hasNavigationBar>
         {stockDataList.map((stockData, index) => (
           <StockFocusBlock key={index} stockData={stockData} fontColor="#ffffff" />
         ))}
-      </AppBarPage>
+      </AppBarLayout>
       <Navigation />
     </View>
   );

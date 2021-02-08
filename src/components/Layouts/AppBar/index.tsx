@@ -29,7 +29,7 @@ interface iProps {
   children?: React.ReactNode;
 }
 
-export default function AppBarPage({ title, backButton, altBanner, hasNavigationBar, buttons, children }: iProps) {
+export default function AppBarLayout({ title, backButton, altBanner, hasNavigationBar, buttons, children }: iProps) {
   const history = useHistory();
 
   const handleBackButton = () => {

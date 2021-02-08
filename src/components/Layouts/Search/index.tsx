@@ -23,7 +23,13 @@ const SCTextInput = styled.TextInput`
   font-size: 16px;
 `;
 
-function SearchPage({ suggestions, suggestionRenderFunction, onChangeText, isEmpty, children }: iProps) {
+export default function SearchLayout({
+  suggestions,
+  suggestionRenderFunction,
+  onChangeText,
+  isEmpty,
+  children,
+}: iProps) {
   return (
     <BasePage stickyHeaderIndices={[0]}>
       <SCSearchBar>
@@ -46,5 +52,3 @@ function SearchPage({ suggestions, suggestionRenderFunction, onChangeText, isEmp
     </BasePage>
   );
 }
-
-export default SearchPage;

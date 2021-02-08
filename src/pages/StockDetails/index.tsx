@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ListFocusBlock from "../../components/FocusBlocks/List";
-import { AppBarPage } from "../../components/Pages";
+import AppBarLayout from "../../components/Layouts/AppBar";
 import styled from "styled-components/native";
 import StockData from "../../controllers/StockData/StockData";
 import { useHistory } from "react-router-native";
@@ -60,10 +60,7 @@ export default function StockDetails({ match }: any) {
       });
   }, [history]);
 
-  const renderFunction = (
-    key: "Symbol" | "Name" | "Price" | "Change" | "P/E" | "EPS" | "High" | "Low",
-    index: number
-  ) => (
+  const renderFunction = (key: keyof iStock, index: number) => (
     <SCItemList key={index} first={index === 0}>
       <SCSymbolText>{key}</SCSymbolText>
       <SCNameText>{data[key]}</SCNameText>
@@ -71,8 +68,8 @@ export default function StockDetails({ match }: any) {
   );
 
   return (
-    <AppBarPage title={data.Symbol} backButton>
+    <AppBarLayout title={data.Symbol} backButton>
       <ListFocusBlock data={Object.keys(data)} renderFunction={renderFunction} />
-    </AppBarPage>
+    </AppBarLayout>
   );
 }
