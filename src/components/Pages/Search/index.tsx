@@ -8,6 +8,7 @@ interface iProps {
   suggestions: any[];
   suggestionRenderFunction: (item: any, index: number) => React.ReactNode;
   onChangeText: (text: string) => void;
+  isEmpty: boolean;
   children?: React.ReactNode;
 }
 
@@ -22,7 +23,7 @@ const SCTextInput = styled.TextInput`
   font-size: 16px;
 `;
 
-function SearchPage({ suggestions, suggestionRenderFunction, onChangeText, children }: iProps) {
+function SearchPage({ suggestions, suggestionRenderFunction, onChangeText, isEmpty, children }: iProps) {
   return (
     <BasePage stickyHeaderIndices={[0]}>
       <SCSearchBar>
@@ -33,7 +34,14 @@ function SearchPage({ suggestions, suggestionRenderFunction, onChangeText, child
             onChangeText={onChangeText}></SCTextInput>
         </BaseFocusBlock>
       </SCSearchBar>
-      <ListFocusBlock data={suggestions} renderFunction={suggestionRenderFunction} />
+      {!isEmpty && (
+        <ListFocusBlock
+          title="Sugestões"
+          data={suggestions}
+          renderFunction={suggestionRenderFunction}
+          isEmptyMessage="Nenhuma ação encontrada."
+        />
+      )}
       {children}
     </BasePage>
   );
