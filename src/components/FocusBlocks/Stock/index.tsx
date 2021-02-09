@@ -57,14 +57,11 @@ const SCAmountText = styled.Text<iSCFontColor>`
 `;
 
 export interface iStockData {
-  symbol: string;
-  companyName: string;
-  currentPrice: string;
-  todayChange: string;
-  changeIsPositive: boolean;
-  averagePrice: string;
-  amount: string;
-  totalYield: string;
+  Symbol: string;
+  Name: string;
+  Price: string;
+  Change: string;
+  Amount: number;
 }
 
 interface iProps extends iPropsBase {
@@ -79,22 +76,23 @@ export default function StockFocusBlock({ stockData, fontColor, ...rest }: iProp
     history.push("/stock-details/" + stockSymbol);
   };
   return (
-    <BaseFocusBlock {...rest} onPress={() => handleRedirect(stockData.symbol)}>
+    <BaseFocusBlock {...rest} onPress={() => handleRedirect(stockData.Symbol)}>
       <SCBody>
         <SCMainInfo fontColor={fontColor}>
           <SCMainLeft>
-            <SCSymbolText fontColor={fontColor}>{stockData.symbol}</SCSymbolText>
-            <SCNameText fontColor={fontColor}>{stockData.companyName}</SCNameText>
+            <SCSymbolText fontColor={fontColor}>{stockData.Symbol}</SCSymbolText>
+            <SCNameText fontColor={fontColor}>{stockData.Name}</SCNameText>
           </SCMainLeft>
           <SCMainRight>
-            <SCCurrentText fontColor={fontColor}>{stockData.currentPrice}</SCCurrentText>
-            <SCChangeBadge isPositive={stockData.changeIsPositive}>
-              <SCChangeText>{stockData.todayChange}</SCChangeText>
+            <SCCurrentText fontColor={fontColor}>R${stockData.Price}</SCCurrentText>
+            <SCChangeBadge isPositive={parseFloat(stockData.Change.replace(",", ".")) >= 0}>
+              <SCChangeText>{stockData.Change}%</SCChangeText>
             </SCChangeBadge>
           </SCMainRight>
         </SCMainInfo>
-        <SCAmountText
-          fontColor={fontColor}>{`Valor total: ${stockData.totalYield} (${stockData.amount})`}</SCAmountText>
+        <SCAmountText fontColor={fontColor}>{`Valor total: ${
+          parseFloat(stockData.Price.replace(",", ".")) * stockData.Amount
+        } (${stockData.Amount} cotas)`}</SCAmountText>
       </SCBody>
     </BaseFocusBlock>
   );

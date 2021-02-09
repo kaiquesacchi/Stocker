@@ -1,33 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Navigation } from "../../components/BottomBars";
 import StockFocusBlock, { iStockData } from "../../components/FocusBlocks/Stock";
+import MyWalletController from "../../controllers/MyWallet";
 
 import AppBarLayout from "../../components/Layouts/AppBar";
 
 export default function MyWallet() {
-  const stockDataList: iStockData[] = [
-    {
-      symbol: "ABCD4",
-      companyName: "Empresa A. B.",
-      currentPrice: "R$36,51",
-      todayChange: "-0,12 (-1,3%)",
-      changeIsPositive: false,
-      averagePrice: "R$32,00",
-      amount: "200 cotas",
-      totalYield: "R$ 800,00",
-    },
-    {
-      symbol: "EFGH11",
-      companyName: "Empresa E. F.",
-      currentPrice: "R$12,11",
-      todayChange: "3,12 (+9,4%)",
-      changeIsPositive: true,
-      averagePrice: "R$20,13",
-      amount: "600 cotas",
-      totalYield: "R$ -1803,01",
-    },
-  ];
+  useEffect(() => {
+    MyWalletController.getMyDetailedWallet().then((result) => {
+      Promise.all(result).then((result) => {
+        setStockDataList(result);
+      });
+    });
+  }, []);
+  const [stockDataList, setStockDataList] = useState<iStockData[]>([]);
 
   return (
     <View style={{ flex: 1 }}>

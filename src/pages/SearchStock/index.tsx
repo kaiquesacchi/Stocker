@@ -5,14 +5,14 @@ import { Navigation } from "../../components/BottomBars";
 import SearchLayout from "../../components/Layouts/Search";
 
 import { useHistory } from "react-router-native";
-import StockData from "../../controllers/StockData/StockData";
+import StockDataController from "../../controllers/StockData";
 
 import { SCItemList, SCNameText, SCSymbolText } from "./styles";
 
 export default function SearchStock() {
   const history = useHistory();
 
-  const allStocks = StockData.getAllAvailable();
+  const allStocks = StockDataController.getAllAvailable();
   type keys = keyof typeof allStocks;
 
   const [searchPredictions, setSearchPredictions] = useState<iStock[]>([]);

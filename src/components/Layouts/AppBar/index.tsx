@@ -70,12 +70,12 @@ export default function AppBarLayout({ title, backButton, altBanner, hasNavigati
       </SCBanner>
       <SCStickyHeader>
         <SCStickyHeaderTitle>
-          {backButton ? <SCMaterialIcons name="arrow-back-ios" onPress={handleBackButton} /> : <React.Fragment />}
+          {backButton && <SCMaterialIcons name="arrow-back-ios" onPress={handleBackButton} size={25} />}
           <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
         </SCStickyHeaderTitle>
         <SCStickyHeaderButtons>
           {buttons?.map((button, index) => (
-            <SCMaterialIcons key={index} name={button.name} onPress={button.onPress} />
+            <SCMaterialIcons key={index} name={button.name} onPress={button.onPress} size={35} />
           ))}
         </SCStickyHeaderButtons>
       </SCStickyHeader>

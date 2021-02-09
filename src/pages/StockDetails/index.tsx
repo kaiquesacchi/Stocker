@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ListFocusBlock from "../../components/FocusBlocks/List";
-import AppBarLayout from "../../components/Layouts/AppBar";
+import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
 import styled from "styled-components/native";
-import StockData from "../../controllers/StockData/StockData";
+import StockDataController from "../../controllers/StockData";
+import MyWalletController from "../../controllers/MyWallet";
 import { useHistory } from "react-router-native";
 
 interface iSCListItem {
@@ -49,13 +50,16 @@ export default function StockDetails({ match }: any) {
 
   useEffect(() => {
     const symbol = match.params.stockSymbol;
-    StockData.getBySymbol(symbol)
+    StockDataController.getBySymbol(symbol)
       .then((response) => {
-        if (response === null) throw new Error();
-        setData(JSON.parse(response as string));
+        setData(response);
       })
-      .catch(() => {
-        alert("Ação não encontrada.");
+      .catch((e) => {
+        if (e === "Stock not found.") alert("Ação não encontrada.");
+        else {
+          alert("Erro desconhecido.");
+          console.warn(e);
+        }
         history.goBack();
       });
   }, [history]);
@@ -67,8 +71,12 @@ export default function StockDetails({ match }: any) {
     </SCItemList>
   );
 
+  const buttons: iButton[] = [
+    { name: "add", onPress: () => MyWalletController.addTrade(data.Symbol, 30, 21.12, new Date()) },
+  ];
+
   return (
-    <AppBarLayout title={data.Symbol} backButton>
+    <AppBarLayout title={data.Symbol} backButton buttons={buttons}>
       <ListFocusBlock data={Object.keys(data)} renderFunction={renderFunction} />
     </AppBarLayout>
   );

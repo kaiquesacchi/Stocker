@@ -47,7 +47,6 @@ const SCSmallHeader = styled.Text<iSCSmallHeader>`
 `;
 
 const SCMaterialIcons = styled(MaterialIcons)`
-  font-size: 25px;
   margin-right: 10px;
   color: white;
 `;
