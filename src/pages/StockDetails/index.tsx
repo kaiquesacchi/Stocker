@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-native";
 
-import { Button, Modal, TextInput } from "react-native";
+import { Button, Dimensions, Modal, TextInput } from "react-native";
 import SwitchSelector from "react-native-switch-selector";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { LineChart } from "react-native-chart-kit";
 
 import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
 import ListFocusBlock from "../../components/FocusBlocks/List";
@@ -22,6 +23,7 @@ interface iStock {
   EPS: string;
   High: string;
   Low: string;
+  "Last 30 Days": number[];
 }
 
 export default function StockDetails({ match }: any) {
@@ -36,6 +38,7 @@ export default function StockDetails({ match }: any) {
     EPS: "",
     High: "",
     Low: "",
+    "Last 30 Days": [],
   });
 
   useEffect(() => {
@@ -114,10 +117,35 @@ export default function StockDetails({ match }: any) {
       .catch(() => alert("Erro ao salvar transação"))
       .finally(() => setModalVisible(false));
   };
+  /* End Modal Config. */
 
   const buttons: iButton[] = [{ name: "add", onPress: handleOpenModal }];
+
+  const altBanner = (
+    <LineChart
+      bezier
+      data={{
+        datasets: [
+          {
+            data: data["Last 30 Days"],
+          },
+        ],
+      }}
+      chartConfig={{
+        color: (opacity = 1) => `rgba(113, 199, 187, 1)`,
+      }}
+      width={Dimensions.get("window").width}
+      height={250}
+      withDots={false}
+      withInnerLines={false}
+      withOuterLines={false}
+      withVerticalLabels={false}
+      withShadow={false}
+      yAxisLabel="R$ "
+    />
+  );
   return (
-    <AppBarLayout title={data.Symbol} backButton buttons={buttons}>
+    <AppBarLayout title={data.Symbol} backButton buttons={buttons} altBanner={altBanner}>
       <Modal visible={modalVisible} transparent animationType="fade">
         <SCModal.Background>
           <SCModal.InvisibleArea onPress={() => setModalVisible(false)} />

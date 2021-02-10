@@ -10,11 +10,16 @@ export function getAllData() {
           csvToJson()
             .fromString(csv)
             .then((json) => {
-              Promise.all(json.slice(1).map((stock) => AsyncStorage.setItem(stock.Symbol, JSON.stringify(stock)))).then(
-                () => {
-                  alert("Valores atualizados.");
-                }
-              );
+              Promise.all(
+                json.slice(1).map((stock) => {
+                  stock["Last 30 Days"] = stock["Last 30 Days"]
+                    .split(";")
+                    .map((value: string) => Number(value.replace(",", ".")));
+                  AsyncStorage.setItem(stock.Symbol, JSON.stringify(stock));
+                })
+              ).then(() => {
+                alert("Valores atualizados.");
+              });
             });
         });
       } else {

@@ -4,12 +4,13 @@ import { Dimensions } from "react-native";
 
 interface iSCBannerProps {
   height: number;
+  isAltBanner: boolean;
 }
 
 const SCBanner = styled.View<iSCBannerProps>`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${(props) => (props.isAltBanner ? "flex-end" : "center")};
 
   height: ${(props) => props.height + "px"};
 `;

@@ -57,7 +57,7 @@ export default function AppBarLayout({ title, backButton, altBanner, hasNavigati
   return (
     <SCPage onScroll={handleScroll} stickyHeaderIndices={[0, 2]}>
       <SCTopMargin />
-      <SCBanner height={bannerHeight}>
+      <SCBanner height={bannerHeight} isAltBanner={!!altBanner}>
         {altBanner ? (
           <SCAltBanner opacity={bannerOpacity} marginTop={bannerPadding}>
             {altBanner}
