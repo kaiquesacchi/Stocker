@@ -12,32 +12,23 @@ import ListFocusBlock from "../../components/FocusBlocks/List";
 import StockDataController from "../../controllers/StockData";
 import MyWalletController from "../../controllers/MyWallet";
 
+import { iGoogleFinanceStockData } from "../../services/GoogleFinanceAPI";
+
 import * as SC from "./styles";
 import * as SCModal from "./stylesModal";
-interface iStock {
-  Symbol: string;
-  Name: string;
-  Price: string;
-  Change: string;
-  "P/E": string;
-  EPS: string;
-  High: string;
-  Low: string;
-  "Last 30 Days": number[];
-}
 
 export default function StockDetails({ match }: any) {
   const history = useHistory();
 
-  const [data, setData] = useState<iStock>({
+  const [data, setData] = useState<iGoogleFinanceStockData>({
     Symbol: "",
     Name: "",
-    Price: "",
-    Change: "",
-    "P/E": "",
-    EPS: "",
-    High: "",
-    Low: "",
+    Price: null,
+    Change: null,
+    "P/E": null,
+    EPS: null,
+    High: null,
+    Low: null,
     "Last 30 Days": [],
   });
 
@@ -57,7 +48,7 @@ export default function StockDetails({ match }: any) {
       });
   }, [history]);
 
-  const renderFunction = (key: keyof iStock, index: number) => (
+  const renderFunction = (key: keyof iGoogleFinanceStockData, index: number) => (
     <SC.ItemList key={index} first={index === 0}>
       <SC.SymbolText>{key}</SC.SymbolText>
       <SC.NameText>{data[key]}</SC.NameText>
