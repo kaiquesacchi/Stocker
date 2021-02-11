@@ -1,6 +1,6 @@
 import React from "react";
 import { Dimensions, View } from "react-native";
-import { Navigation } from "../../components/BottomBars";
+import Navigation from "../../components/BottomBars/Navigation";
 import ListFocusBlock from "../../components/FocusBlocks/List";
 
 import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";

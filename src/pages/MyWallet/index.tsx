@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Navigation } from "../../components/BottomBars";
+import Navigation from "../../components/BottomBars/Navigation";
 import StockFocusBlock, { iStockData } from "../../components/FocusBlocks/Stock";
 import MyWalletController from "../../controllers/MyWallet";
 

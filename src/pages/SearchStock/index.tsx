@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from "react";
 import { View } from "react-native";
-import { Navigation } from "../../components/BottomBars";
+import Navigation from "../../components/BottomBars/Navigation";
 
 import SearchLayout from "../../components/Layouts/Search";
 
