@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "3.0.4",
+    "@types/react-native-dotenv": "^0.2.0",
     "@types/react-router-native": "^5.1.0",
     "@types/styled-components": "^5.1.7",
     "@types/styled-components-react-native": "^5.1.0",
