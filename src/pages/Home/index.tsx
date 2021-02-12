@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, View } from "react-native";
 import Navigation from "../../components/BottomBars/Navigation";
 import ListFocusBlock from "../../components/FocusBlocks/List";
@@ -10,35 +10,22 @@ import { SCHorizontalListItem, SCListItem, SCTitle, SCValue } from "./styles";
 import { ProgressChart } from "react-native-chart-kit";
 import { getAllData } from "../../services/GoogleFinanceAPI";
 
+import MyWalletController from "../../controllers/MyWallet";
+import StockDataController from "../../controllers/StockData";
+import CurrencyService from "../../services/Currency";
+
 /* Chart settings. */
-const chartData = {
-  data: [0.8, 0.1, 0.6],
-  labels: ["CDI", "IBOVESPA", "Carteira"],
-};
+
 const chartConfig = {
   color: (opacity = 1) => `rgba(113, 199, 187, ${opacity})`,
 };
-const altBanner = (
-  <ProgressChart
-    data={chartData}
-    chartConfig={chartConfig}
-    width={Dimensions.get("window").width}
-    height={220}
-    radius={50}
-    hideLegend
-  />
-);
+
 /* End of Chart settings. */
 /* Chart legend. */
 interface iLegendDataItem {
   title: string;
   value: string;
 }
-const legendData: iLegendDataItem[] = [
-  { title: "Carteira", value: "12.9%" },
-  { title: "IBOVESPA", value: "4%" },
-  { title: "CDI", value: "0.5%" },
-];
 
 const legendRenderFunction = (item: iLegendDataItem, index: number) => (
   <SCHorizontalListItem first={index === 0} key={index}>
@@ -52,11 +39,6 @@ interface iSummaryDataItem {
   title: string;
   value: string;
 }
-const summaryData: iSummaryDataItem[] = [
-  { title: "Valor Aplicado", value: "32516.50" },
-  { title: "Saldo Bruto Atual", value: "31152.45" },
-  { title: "Lucro Realizado", value: "105.50" },
-];
 
 const summaryRenderFunction = (item: iSummaryDataItem, index: number) => (
   <SCListItem first={index === 0} key={index}>
@@ -67,16 +49,63 @@ const summaryRenderFunction = (item: iSummaryDataItem, index: number) => (
 /* End of Summary Info. */
 
 export default function Home() {
+  const [wallet30Change, setWallet30Change] = useState(0);
+  const [currentInvested, setCurrentInvested] = useState(0);
+  const [currentEarnings, setCurrentEarnings] = useState(0);
+  const [IBOVChange, setIBOVChange] = useState(0);
+  const [INXChange, setINXChange] = useState(0);
+  useEffect(() => {
+    MyWalletController.getFullStats().then((result) => {
+      setWallet30Change(result.totalChangeIn30);
+      setCurrentInvested(result.currentInvested);
+      setCurrentEarnings(result.currentEarnings);
+    });
+    StockDataController.getChangeIn30("IBOV").then((result) => setIBOVChange(result || 0));
+    StockDataController.getChangeIn30(".INX").then((result) => setINXChange(result || 0));
+  }, []);
+
+  const legendData: iLegendDataItem[] = [
+    { title: "Carteira", value: CurrencyService.toReadable(wallet30Change) + "%" },
+    { title: "IBOVESPA", value: CurrencyService.toReadable(IBOVChange) + "%" },
+    { title: "S&P 500", value: CurrencyService.toReadable(INXChange) + "%" },
+  ];
+
+  const summaryData: iSummaryDataItem[] = [
+    { title: "Valor Atualmente Investido", value: CurrencyService.toReadable(currentInvested) },
+    { title: "Lucro Atual", value: CurrencyService.toReadable(currentEarnings) },
+  ];
+
   const buttons: iButton[] = [
     {
       name: "cached",
       onPress: getAllData,
     },
   ];
+
+  const normalize = (values: number[]) => {
+    const min = Math.min(...values) - 1;
+    const max = Math.max(...values) + 1;
+    return values.map((value) => (value - min) / (max - min));
+  };
+
+  const altBanner = (
+    <ProgressChart
+      data={{
+        data: normalize([wallet30Change, IBOVChange, INXChange]),
+        labels: [],
+      }}
+      chartConfig={chartConfig}
+      width={Dimensions.get("window").width}
+      height={220}
+      radius={50}
+      hideLegend
+    />
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <AppBarLayout title="Resumo" hasNavigationBar altBanner={altBanner} buttons={buttons}>
-        <ListFocusBlock horizontal data={legendData} renderFunction={legendRenderFunction} />
+        <ListFocusBlock title="Últimos 30 Dias" horizontal data={legendData} renderFunction={legendRenderFunction} />
         <ListFocusBlock title="Totais" data={summaryData} renderFunction={summaryRenderFunction} />
       </AppBarLayout>
       <Navigation />

@@ -13,4 +13,15 @@ export default class StockData {
   static getAllAvailable = () => {
     return AllStocks;
   };
+
+  /**
+   * Calculates the change in price on the last 30 days
+   * @param symbol Stock symbol
+   * @returns Change (as percentage) in price . Returns null if price or price history are unavailable.
+   */
+  static getChangeIn30 = async (symbol: string) => {
+    const { Price, "Last 30 Days": LastIn30 } = await StockData.getBySymbol(symbol);
+    if (Price === null || LastIn30.length === 0) return null;
+    return ((Price - LastIn30[0]) / LastIn30[0]) * 100;
+  };
 }

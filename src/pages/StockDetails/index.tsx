@@ -116,6 +116,7 @@ export default function StockDetails({ match }: any) {
     <LineChart
       bezier
       data={{
+        labels: [],
         datasets: [
           {
             data: data["Last 30 Days"],

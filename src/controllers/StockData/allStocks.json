@@ -345,7 +345,8 @@
     "ITSA3": "Itausa SA",
     "ITSA4": "Itausa SA Preference Shares",
     "ITUB3": "Itau Unibanco Holding SA",
-    "ITUB4": "Itau Unibanco Holding SA Preference Shares"
+    "ITUB4": "Itau Unibanco Holding SA Preference Shares",
+    "IBOV": "IBOVESPA"
   },
   "J": {
     "JBDU3": "Industrias JB Duarte SA",
@@ -665,5 +666,8 @@
   "Y": {
     "YDUQ3": "YDUQS Participacoes SA",
     "YUMR34": "Yum Brands Inc BDR"
+  },
+  ".": {
+    ".INX": "S&P 500"
   }
 }
