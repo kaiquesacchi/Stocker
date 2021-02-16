@@ -17,9 +17,11 @@ import { iGoogleFinanceStockData } from "../../services/GoogleFinanceAPI";
 import * as SC from "./styles";
 import * as SCModal from "./stylesModal";
 import CurrencyService from "../../services/Currency";
+import useLoadingStockDataContext from "../../context/LoadingStockData";
 
 export default function StockDetails({ match }: any) {
   const history = useHistory();
+  const [isLoading] = useLoadingStockDataContext();
 
   const [data, setData] = useState<iGoogleFinanceStockData>({
     Symbol: "",
@@ -215,7 +217,7 @@ export default function StockDetails({ match }: any) {
           </SCModal.FocusBlock>
         </SCModal.Background>
       </Modal>
-      <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderFunction} />
+      <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderFunction} isLoading={isLoading} />
     </AppBarLayout>
   );
 }

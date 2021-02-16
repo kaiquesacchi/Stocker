@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, View } from "react-native";
+
+import useLoadingStockDataContext from "../../context/LoadingStockData";
+
 import Navigation from "../../components/BottomBars/Navigation";
 import ListFocusBlock from "../../components/FocusBlocks/List";
 
@@ -49,11 +52,13 @@ const summaryRenderFunction = (item: iSummaryDataItem, index: number) => (
 /* End of Summary Info. */
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useLoadingStockDataContext();
   const [wallet30Change, setWallet30Change] = useState(0);
   const [currentInvested, setCurrentInvested] = useState(0);
   const [currentEarnings, setCurrentEarnings] = useState(0);
   const [IBOVChange, setIBOVChange] = useState(0);
   const [INXChange, setINXChange] = useState(0);
+
   useEffect(() => {
     MyWalletController.getFullStats().then((result) => {
       setWallet30Change(result.totalChangeIn30);
@@ -78,7 +83,7 @@ export default function Home() {
   const buttons: iButton[] = [
     {
       name: "cached",
-      onPress: getAllData,
+      onPress: () => getAllData(setIsLoading),
     },
   ];
 
@@ -105,8 +110,19 @@ export default function Home() {
   return (
     <View style={{ flex: 1 }}>
       <AppBarLayout title="Resumo" hasNavigationBar altBanner={altBanner} buttons={buttons}>
-        <ListFocusBlock title="Últimos 30 Dias" horizontal data={legendData} renderFunction={legendRenderFunction} />
-        <ListFocusBlock title="Totais" data={summaryData} renderFunction={summaryRenderFunction} />
+        <ListFocusBlock
+          title="Últimos 30 Dias"
+          horizontal
+          data={legendData}
+          renderFunction={legendRenderFunction}
+          isLoading={isLoading}
+        />
+        <ListFocusBlock
+          title="Totais"
+          data={summaryData}
+          renderFunction={summaryRenderFunction}
+          isLoading={isLoading}
+        />
       </AppBarLayout>
       <Navigation />
     </View>

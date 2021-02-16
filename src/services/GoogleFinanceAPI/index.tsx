@@ -1,6 +1,7 @@
 import { AsyncStorage } from "react-native";
 import csvToJson from "csvtojson";
 import { GOOGLE_FINANCE_URL } from "@env";
+import useLoadingStockDataContext from "../../context/LoadingStockData";
 
 export interface iGoogleFinanceStockData {
   Symbol: string;
@@ -18,7 +19,8 @@ export function fromBackendToNumber(value: string) {
   return isNaN(parsedValue) ? null : parsedValue;
 }
 
-export function getAllData() {
+export function getAllData(setIsLoading: (newValue: boolean) => void) {
+  setIsLoading(true);
   return fetch(GOOGLE_FINANCE_URL)
     .then((response) => {
       if (response.ok) {
@@ -54,5 +56,8 @@ export function getAllData() {
     .catch((error) => {
       console.dir(error);
       alert("Não foi possível obter dados do Google Finance.");
+    })
+    .finally(() => {
+      setIsLoading(false);
     });
 }

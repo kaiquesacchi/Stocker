@@ -15,17 +15,22 @@ const SCBody = styled.TouchableOpacity`
   background-color: #333;
 `;
 
+const SCActivityIndicator = styled.ActivityIndicator`
+  margin: 20px 0;
+`;
+
 export interface iProps extends TouchableOpacityProps {
   title?: string;
   children?: React.ReactNode;
+  isLoading?: boolean;
 }
 
-export default function BaseFocusBlock({ title, children, onPress, ...rest }: iProps) {
+export default function BaseFocusBlock({ title, children, onPress, isLoading, ...rest }: iProps) {
   return (
     <React.Fragment>
       {title ? <SCTitle>{title}</SCTitle> : <React.Fragment />}
       <SCBody {...rest} onPress={onPress} activeOpacity={onPress ? 0.5 : 1}>
-        {children}
+        {isLoading ? <SCActivityIndicator size="large" color="#71c7bb" /> : children}
       </SCBody>
     </React.Fragment>
   );

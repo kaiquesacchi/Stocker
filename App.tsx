@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import Router from "./src/pages";
 
 import { ActiveTabContextProvider } from "./src/context/ActiveTab";
+import { LoadingStockDataContextProvider } from "./src/context/LoadingStockData";
 
 if (__DEV__) {
   import("./dev/ReactotronConfig");
@@ -11,8 +12,10 @@ if (__DEV__) {
 export default function App() {
   return (
     <ActiveTabContextProvider>
-      <StatusBar style="light" />
-      <Router />
+      <LoadingStockDataContextProvider>
+        <StatusBar style="light" />
+        <Router />
+      </LoadingStockDataContextProvider>
     </ActiveTabContextProvider>
   );
 }
