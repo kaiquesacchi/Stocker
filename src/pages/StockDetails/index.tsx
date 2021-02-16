@@ -16,6 +16,7 @@ import { iGoogleFinanceStockData } from "../../services/GoogleFinanceAPI";
 
 import * as SC from "./styles";
 import * as SCModal from "./stylesModal";
+import CurrencyService from "../../services/Currency";
 
 export default function StockDetails({ match }: any) {
   const history = useHistory();
@@ -31,12 +32,35 @@ export default function StockDetails({ match }: any) {
     Low: null,
     "Last 30 Days": [],
   });
+  const [formattedData, setFormattedData] = useState({
+    Código: "Não Disponível",
+    "Nome da Empresa": "Não Disponível",
+    "Preço Atual": "Não Disponível",
+    "Mudança Percentual do Dia": "Não Disponível",
+    "Relação Preço Lucro (P/L)": "Não Disponível",
+    "Lucro por Ação (LPA)": "Não Disponível",
+    "Alta do Dia": "Não Disponível",
+    "Baixa do Dia": "Não Disponível",
+  });
 
   useEffect(() => {
     const symbol = match.params.stockSymbol;
     StockDataController.getBySymbol(symbol)
       .then((response) => {
         setData(response);
+        setFormattedData({
+          Código: response.Symbol,
+          "Nome da Empresa": response.Name,
+          "Preço Atual": response.Price !== null ? "R$" + CurrencyService.toReadable(response.Price) : "Não Disponível",
+          "Mudança Percentual do Dia":
+            response.Change !== null ? CurrencyService.toReadable(response.Change) + "%" : "Não Disponível",
+          "Relação Preço Lucro (P/L)":
+            response["P/E"] !== null ? CurrencyService.toReadable(response["P/E"]) : "Não Disponível",
+          "Lucro por Ação (LPA)":
+            response["EPS"] !== null ? CurrencyService.toReadable(response["EPS"]) : "Não Disponível",
+          "Alta do Dia": response.High !== null ? "R$" + CurrencyService.toReadable(response.High) : "Não Disponível",
+          "Baixa do Dia": response.Low !== null ? "R$" + CurrencyService.toReadable(response.Low) : "Não Disponível",
+        });
       })
       .catch((e) => {
         if (e === "Stock not found.") alert("Ação não encontrada.");
@@ -48,10 +72,10 @@ export default function StockDetails({ match }: any) {
       });
   }, [history]);
 
-  const renderFunction = (key: keyof iGoogleFinanceStockData, index: number) => (
+  const renderFunction = (key: keyof typeof formattedData, index: number) => (
     <SC.ItemList key={index} first={index === 0}>
       <SC.SymbolText>{key}</SC.SymbolText>
-      <SC.NameText>{data[key]}</SC.NameText>
+      <SC.NameText>{formattedData[key]}</SC.NameText>
     </SC.ItemList>
   );
 
@@ -191,7 +215,7 @@ export default function StockDetails({ match }: any) {
           </SCModal.FocusBlock>
         </SCModal.Background>
       </Modal>
-      <ListFocusBlock data={Object.keys(data)} renderFunction={renderFunction} />
+      <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderFunction} />
     </AppBarLayout>
   );
 }
