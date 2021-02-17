@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 
 const SCBottomBar = styled.ScrollView`
-  background-color: black;
+  background-color: ${(props) => props.theme.palette.background.main};
   min-height: 44.7px;
   max-height: 44.7px;
 `;
@@ -14,7 +14,7 @@ const SCButton = styled.TouchableHighlight`
 `;
 
 const SCButtonText = styled.Text`
-  color: #71c7bb;
+  color: ${(props) => props.theme.palette.primary.main};
   font-size: 16px;
 `;
 

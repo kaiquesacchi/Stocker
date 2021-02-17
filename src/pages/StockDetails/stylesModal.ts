@@ -13,19 +13,16 @@ export const FocusBlock = styled(BaseFocusBlock)`
   margin-bottom: 0;
 `;
 
-interface iSCTextInput {
-  isOnFocus?: boolean;
-}
-export const TextInput = styled.TextInput<iSCTextInput>`
+export const TextInput = styled.TextInput`
   border-style: solid;
-  border-color: ${(props) => (props.isOnFocus ? "#a03" : "#fff8")};
+  border-color: ${(props) => props.theme.palette.focusBlock.contrastText + props.theme.secondaryTextOpacity};
   border-bottom-width: 1px;
   color: white;
   margin-top: 20px;
 `;
 
 export const Text = styled.Text`
-  color: #fff8;
+  color: ${(props) => props.theme.palette.focusBlock.contrastText + props.theme.secondaryTextOpacity};
   margin: 30px 0 10px;
 `;
 
@@ -42,5 +39,5 @@ export const ActionButton = styled.TouchableHighlight`
 `;
 
 export const ActionButtonText = styled.Text`
-  color: #71c7bb;
+  color: ${(props) => props.theme.palette.primary.main};
 `;

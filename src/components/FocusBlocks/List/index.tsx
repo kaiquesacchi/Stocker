@@ -11,7 +11,7 @@ const SCList = styled.View<iSCList>`
   justify-content: space-around;
 `;
 const SCIsEmptyText = styled.Text`
-  color: #fffd;
+  color: ${(props) => props.theme.palette.focusBlock.contrastText + props.theme.secondaryTextOpacity};
   padding: 20px 0;
   font-size: 14px;
 `;

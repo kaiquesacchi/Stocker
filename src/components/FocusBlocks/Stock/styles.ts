@@ -1,20 +1,16 @@
 import styled from "styled-components/native";
 
-interface iFontColor {
-  fontColor: string;
-}
-
 export const Body = styled.View`
   padding: 20px 0;
 `;
 
-export const MainInfo = styled.View<iFontColor>`
+export const MainInfo = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom-width: 1px;
-  border-color: ${(props) => props.fontColor + "50"};
+  border-color: ${(props) => props.theme.palette.focusBlock.contrastText + "50"};
 `;
 export const MainLeft = styled.View`
   flex: 1;
@@ -23,16 +19,16 @@ export const MainRight = styled.View`
   align-items: flex-end;
 `;
 
-export const SymbolText = styled.Text<iFontColor>`
-  color: ${(props) => props.fontColor};
+export const SymbolText = styled.Text`
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
   font-size: 20px;
 `;
-export const NameText = styled.Text<iFontColor>`
-  color: ${(props) => props.fontColor};
+export const NameText = styled.Text`
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
   opacity: 0.8;
 `;
-export const CurrentText = styled.Text<iFontColor>`
-  color: ${(props) => props.fontColor};
+export const CurrentText = styled.Text`
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
   font-size: 20px;
 `;
 
@@ -51,6 +47,6 @@ export const ChangeText = styled.Text`
   color: white;
 `;
 
-export const AmountText = styled.Text<iFontColor>`
-  color: ${(props) => props.fontColor};
+export const AmountText = styled.Text`
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
 `;

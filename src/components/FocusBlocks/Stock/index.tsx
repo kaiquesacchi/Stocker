@@ -15,10 +15,9 @@ export interface iStockData {
 
 interface iProps extends iPropsBase {
   stockData: iStockData;
-  fontColor: string;
 }
 
-export default function StockFocusBlock({ stockData, fontColor, onPress, ...rest }: iProps) {
+export default function StockFocusBlock({ stockData, onPress, ...rest }: iProps) {
   const history = useHistory();
 
   const handleRedirect = (stockSymbol: string) => {
@@ -27,19 +26,19 @@ export default function StockFocusBlock({ stockData, fontColor, onPress, ...rest
   return (
     <BaseFocusBlock {...rest} onPress={onPress ? onPress : () => handleRedirect(stockData.Symbol)}>
       <SC.Body>
-        <SC.MainInfo fontColor={fontColor}>
+        <SC.MainInfo>
           <SC.MainLeft>
-            <SC.SymbolText fontColor={fontColor}>{stockData.Symbol}</SC.SymbolText>
-            <SC.NameText fontColor={fontColor}>{stockData.Name}</SC.NameText>
+            <SC.SymbolText>{stockData.Symbol}</SC.SymbolText>
+            <SC.NameText>{stockData.Name}</SC.NameText>
           </SC.MainLeft>
           <SC.MainRight>
-            <SC.CurrentText fontColor={fontColor}>R${CurrencyService.toReadable(stockData.Price || 0)}</SC.CurrentText>
+            <SC.CurrentText>R${CurrencyService.toReadable(stockData.Price || 0)}</SC.CurrentText>
             <SC.ChangeBadge isPositive={!stockData.Change || stockData.Change >= 0}>
               <SC.ChangeText>{CurrencyService.toReadable(stockData.Change || 0)}%</SC.ChangeText>
             </SC.ChangeBadge>
           </SC.MainRight>
         </SC.MainInfo>
-        <SC.AmountText fontColor={fontColor}>{`Valor total: ${
+        <SC.AmountText>{`Valor total: ${
           stockData.Price ? "R$" + CurrencyService.toReadable(stockData.Price * stockData.Amount) : "Não disponível."
         } (${stockData.Amount} cotas)`}</SC.AmountText>
       </SC.Body>

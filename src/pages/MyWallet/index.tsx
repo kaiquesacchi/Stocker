@@ -68,7 +68,6 @@ export default function MyWallet() {
             )}
             <StockFocusBlock
               stockData={stockData}
-              fontColor="#ffffff"
               isLoading={isLoading}
               onPress={isSelecting ? () => handleSelect(index) : undefined}
             />

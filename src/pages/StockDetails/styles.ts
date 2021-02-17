@@ -9,11 +9,11 @@ export const ItemList = styled.TouchableOpacity<iListItem>`
   padding-top: 10px;
   margin-bottom: 10px;
 `;
-export const SymbolText = styled.Text`
-  color: white;
+export const TitleText = styled.Text`
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
   font-size: 18px;
 `;
-export const NameText = styled.Text`
-  color: #71c7bb;
+export const ValueText = styled.Text`
+  color: ${(props) => props.theme.palette.primary.main};
   font-size: 14px;
 `;

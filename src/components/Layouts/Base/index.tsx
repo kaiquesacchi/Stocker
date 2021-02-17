@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 
 const SCPage = styled.ScrollView`
   width: 100%;
-  background-color: black;
+  background-color: ${(props) => props.theme.palette.background.main};
   flex-direction: column;
   flex-grow: 1;
 `;

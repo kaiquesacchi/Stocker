@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
+import useTheme from "../../../context/Theme";
 import BaseFocusBlock from "../../FocusBlocks/Base";
 import ListFocusBlock from "../../FocusBlocks/List";
 import BasePage from "../Base";
@@ -14,11 +15,11 @@ interface iProps {
 
 const SCSearchBar = styled.View`
   padding-top: 50px;
-  background-color: black;
+  background-color: ${(props) => props.theme.palette.background.main}; ;
 `;
 
 const SCTextInput = styled.TextInput`
-  color: white;
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
   padding: 8px;
   font-size: 16px;
 `;
@@ -30,13 +31,14 @@ export default function SearchLayout({
   isEmpty,
   children,
 }: iProps) {
+  const [theme] = useTheme();
   return (
     <BasePage stickyHeaderIndices={[0]}>
       <SCSearchBar>
         <BaseFocusBlock>
           <SCTextInput
             placeholder="Pesquise por nome ou símbolo"
-            placeholderTextColor="#fff8"
+            placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
             onChangeText={onChangeText}></SCTextInput>
         </BaseFocusBlock>
       </SCSearchBar>

@@ -1,7 +1,6 @@
 import { AsyncStorage } from "react-native";
 import csvToJson from "csvtojson";
 import { GOOGLE_FINANCE_URL } from "@env";
-import useLoadingStockDataContext from "../../context/LoadingStockData";
 
 export interface iGoogleFinanceStockData {
   Symbol: string;

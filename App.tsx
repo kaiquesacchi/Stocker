@@ -4,6 +4,7 @@ import Router from "./src/pages";
 
 import { ActiveTabContextProvider } from "./src/context/ActiveTab";
 import { LoadingStockDataContextProvider } from "./src/context/LoadingStockData";
+import { ThemeContextProvider } from "./src/context/Theme";
 
 if (__DEV__) {
   import("./dev/ReactotronConfig");
@@ -11,11 +12,13 @@ if (__DEV__) {
 
 export default function App() {
   return (
-    <ActiveTabContextProvider>
-      <LoadingStockDataContextProvider>
-        <StatusBar style="light" />
-        <Router />
-      </LoadingStockDataContextProvider>
-    </ActiveTabContextProvider>
+    <ThemeContextProvider>
+      <ActiveTabContextProvider>
+        <LoadingStockDataContextProvider>
+          <StatusBar style="light" />
+          <Router />
+        </LoadingStockDataContextProvider>
+      </ActiveTabContextProvider>
+    </ThemeContextProvider>
   );
 }

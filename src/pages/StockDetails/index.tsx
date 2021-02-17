@@ -18,8 +18,10 @@ import * as SC from "./styles";
 import * as SCModal from "./stylesModal";
 import CurrencyService from "../../services/Currency";
 import useLoadingStockDataContext from "../../context/LoadingStockData";
+import useTheme from "../../context/Theme";
 
 export default function StockDetails({ match }: any) {
+  const [theme] = useTheme();
   const history = useHistory();
   const [isLoading] = useLoadingStockDataContext();
 
@@ -76,8 +78,8 @@ export default function StockDetails({ match }: any) {
 
   const renderFunction = (key: keyof typeof formattedData, index: number) => (
     <SC.ItemList key={index} first={index === 0}>
-      <SC.SymbolText>{key}</SC.SymbolText>
-      <SC.NameText>{formattedData[key]}</SC.NameText>
+      <SC.TitleText>{key}</SC.TitleText>
+      <SC.ValueText>{formattedData[key]}</SC.ValueText>
     </SC.ItemList>
   );
 
@@ -150,7 +152,13 @@ export default function StockDetails({ match }: any) {
         ],
       }}
       chartConfig={{
-        color: (opacity = 1) => `rgba(113, 199, 187, 1)`,
+        color: (opacity = 1) =>
+          theme.palette.primary.main +
+          Math.floor(opacity * 255)
+            .toString(16)
+            .padStart(2, "0"),
+        backgroundGradientFrom: theme.palette.background.main,
+        backgroundGradientTo: theme.palette.background.main,
       }}
       width={Dimensions.get("window").width}
       height={250}
@@ -169,10 +177,10 @@ export default function StockDetails({ match }: any) {
           <SCModal.InvisibleArea onPress={() => setModalVisible(false)} />
           <SCModal.FocusBlock title="Registrar uma transação">
             <SwitchSelector
-              textColor="#fff"
-              selectedColor="#fff"
-              buttonColor="#377970"
-              backgroundColor="#222"
+              backgroundColor={theme.palette.background.main}
+              textColor={theme.palette.background.contrastText}
+              buttonColor={theme.palette.secondary.main}
+              selectedColor={theme.palette.secondary.contrastText}
               options={[
                 { label: "Compra", value: "buy" },
                 { label: "Venda", value: "sell" },
@@ -182,14 +190,14 @@ export default function StockDetails({ match }: any) {
             />
             <SCModal.TextInput
               ref={inputAmount}
-              placeholderTextColor="#fff8"
+              placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
               placeholder="Quantidade"
               keyboardType="numeric"
               onChangeText={setAmount}
             />
             <SCModal.TextInput
               ref={inputPrice}
-              placeholderTextColor="#fff8"
+              placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
               placeholder="Preço"
               keyboardType="numeric"
               onChangeText={setPrice}
@@ -198,7 +206,7 @@ export default function StockDetails({ match }: any) {
             <Button
               title={date !== undefined ? date.toDateString() : "Data da Transação"}
               onPress={() => setShowDatePicker(true)}
-              color="#377970"
+              color={theme.palette.secondary.main}
             />
             <SCModal.ActionButtonArea>
               <SCModal.ActionButton

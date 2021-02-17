@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import useActiveTab from "../../../context/ActiveTab";
 
 const SCBottomBar = styled.ScrollView`
-  background-color: black;
+  background-color: ${(props) => props.theme.palette.background.main};
   padding: 0 10px 10px;
   min-height: 44.7px;
   max-height: 44.7px;
@@ -14,11 +14,11 @@ interface iSCTab {
   active?: boolean;
 }
 const SCTab = styled.Text<iSCTab>`
-  color: ${(props) => (props.active ? "#71c7bb" : "white")};
+  color: ${(props) => (props.active ? props.theme.palette.primary.main : props.theme.palette.background.contrastText)};
   font-size: 16px;
   border-radius: 0.1px;
   border-style: solid;
-  border-color: ${(props) => (props.active ? "#71c7bb" : "#0000")};
+  border-color: ${(props) => (props.active ? props.theme.palette.primary.main : "#0000")};
   border-bottom-width: ${(props) => (props.active ? "1px" : "0px")};
   padding: 10px 0 5px;
 `;

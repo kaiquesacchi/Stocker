@@ -16,14 +16,8 @@ import { getAllData } from "../../services/GoogleFinanceAPI";
 import MyWalletController from "../../controllers/MyWallet";
 import StockDataController from "../../controllers/StockData";
 import CurrencyService from "../../services/Currency";
+import useTheme from "../../context/Theme";
 
-/* Chart settings. */
-
-const chartConfig = {
-  color: (opacity = 1) => `rgba(113, 199, 187, ${opacity})`,
-};
-
-/* End of Chart settings. */
 /* Chart legend. */
 interface iLegendDataItem {
   title: string;
@@ -53,6 +47,7 @@ const summaryRenderFunction = (item: iSummaryDataItem, index: number) => (
 
 export default function Home() {
   const [isLoading, setIsLoading] = useLoadingStockDataContext();
+  const [theme] = useTheme();
   const [wallet30Change, setWallet30Change] = useState(0);
   const [currentInvested, setCurrentInvested] = useState(0);
   const [currentEarnings, setCurrentEarnings] = useState(0);
@@ -90,22 +85,33 @@ export default function Home() {
   const normalize = (values: number[]) => {
     const min = Math.min(...values) - 1;
     const max = Math.max(...values) + 1;
+    if (max - min === 0) return values.map((_) => 0.5);
     return values.map((value) => (value - min) / (max - min));
   };
 
+  /* Chart settings. */
   const altBanner = (
     <ProgressChart
       data={{
         data: normalize([wallet30Change, IBOVChange, INXChange]),
         labels: [],
       }}
-      chartConfig={chartConfig}
+      chartConfig={{
+        color: (opacity = 1) =>
+          theme.palette.primary.main +
+          Math.floor(opacity * 255)
+            .toString(16)
+            .padStart(2, "0"),
+        backgroundGradientFrom: theme.palette.background.main,
+        backgroundGradientTo: theme.palette.background.main,
+      }}
       width={Dimensions.get("window").width}
       height={220}
       radius={50}
       hideLegend
     />
   );
+  /* End of Chart settings. */
 
   return (
     <View style={{ flex: 1 }}>

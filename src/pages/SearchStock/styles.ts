@@ -11,11 +11,11 @@ export const SCItemList = styled.TouchableOpacity<iSCListItem>`
 `;
 
 export const SCSymbolText = styled.Text`
-  color: white;
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
   font-size: 18px;
 `;
 
 export const SCNameText = styled.Text`
-  color: #fffa;
+  color: ${(props) => props.theme.palette.focusBlock.contrastText + props.theme.secondaryTextOpacity};
   font-size: 14px;
 `;

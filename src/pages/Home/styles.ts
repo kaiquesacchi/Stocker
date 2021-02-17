@@ -19,10 +19,10 @@ const SCListItem = styled.View<iSCListItem>`
 
 const SCTitle = styled.Text`
   font-size: 16px;
-  color: white;
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
 `;
 const SCValue = styled.Text`
-  color: #71c7bb;
+  color: ${(props) => props.theme.palette.primary.main};
 `;
 
 export { SCHorizontalListItem, SCListItem, SCTitle, SCValue };
