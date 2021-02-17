@@ -75,7 +75,7 @@ export default function AppBarLayout({ title, backButton, altBanner, hasNavigati
         </SCStickyHeaderTitle>
         <SCStickyHeaderButtons>
           {buttons?.map((button, index) => (
-            <SCMaterialIcons key={index} name={button.name} onPress={button.onPress} size={35} />
+            <SCMaterialIcons key={index} name={button.name} onPress={button.onPress} size={25} />
           ))}
         </SCStickyHeaderButtons>
       </SCStickyHeader>

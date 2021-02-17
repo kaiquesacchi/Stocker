@@ -86,4 +86,10 @@ export default class MyWallet {
       currentEarnings: currentInvested + soldMinusSpent,
     };
   };
+
+  static removeFromWallet = async (symbols: string[]) => {
+    let myWallet = await MyWallet.getMyWallet();
+    symbols.forEach((symbol) => delete myWallet[symbol]);
+    return AsyncStorage.setItem("_myWallet", JSON.stringify(myWallet));
+  };
 }

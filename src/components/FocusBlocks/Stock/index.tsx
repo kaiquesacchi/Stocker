@@ -18,14 +18,14 @@ interface iProps extends iPropsBase {
   fontColor: string;
 }
 
-export default function StockFocusBlock({ stockData, fontColor, ...rest }: iProps) {
+export default function StockFocusBlock({ stockData, fontColor, onPress, ...rest }: iProps) {
   const history = useHistory();
 
   const handleRedirect = (stockSymbol: string) => {
     history.push("/stock-details/" + stockSymbol);
   };
   return (
-    <BaseFocusBlock {...rest} onPress={() => handleRedirect(stockData.Symbol)}>
+    <BaseFocusBlock {...rest} onPress={onPress ? onPress : () => handleRedirect(stockData.Symbol)}>
       <SC.Body>
         <SC.MainInfo fontColor={fontColor}>
           <SC.MainLeft>

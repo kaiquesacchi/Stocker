@@ -5,7 +5,6 @@ import useActiveTab from "../../../context/ActiveTab";
 
 const SCBottomBar = styled.ScrollView`
   background-color: black;
-  display: flex;
   padding: 0 10px 10px;
   min-height: 44.7px;
   max-height: 44.7px;
