@@ -20,7 +20,6 @@ const SCSearchBar = styled.View`
 
 const SCTextInput = styled.TextInput`
   color: ${(props) => props.theme.palette.focusBlock.contrastText};
-  padding: 8px;
   font-size: 16px;
 `;
 

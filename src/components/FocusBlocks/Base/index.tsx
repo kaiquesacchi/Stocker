@@ -10,7 +10,7 @@ const SCTitle = styled.Text`
 
 const SCBody = styled.TouchableOpacity`
   width: 100%;
-  padding: 0 20px;
+  padding: 15px 20px;
   border-radius: 30px;
   margin-bottom: 10px;
   background-color: ${(props) => props.theme.palette.focusBlock.main};

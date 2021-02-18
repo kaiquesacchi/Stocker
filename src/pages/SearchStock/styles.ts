@@ -6,8 +6,8 @@ interface iSCListItem {
 export const SCItemList = styled.TouchableOpacity<iSCListItem>`
   border-top-width: 1px;
   border-color: ${(props) => (props.first ? "#0000" : "#6665")};
-  padding-top: 10px;
-  margin-bottom: 10px;
+  padding-top: ${(props) => (props.first ? "0px" : "10px")};
+  margin-top: ${(props) => (props.first ? "0px" : "10px")};
 `;
 
 export const SCSymbolText = styled.Text`

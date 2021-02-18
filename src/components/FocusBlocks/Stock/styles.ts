@@ -1,9 +1,5 @@
 import styled from "styled-components/native";
 
-export const Body = styled.View`
-  padding: 20px 0;
-`;
-
 export const MainInfo = styled.View`
   flex-direction: row;
   justify-content: space-between;

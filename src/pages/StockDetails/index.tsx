@@ -8,6 +8,7 @@ import { LineChart } from "react-native-chart-kit";
 
 import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
 import ListFocusBlock from "../../components/FocusBlocks/List";
+import BaseFocusBlock from "../../components/FocusBlocks/Base";
 
 import StockDataController from "../../controllers/StockData";
 import MyWalletController from "../../controllers/MyWallet";
@@ -175,7 +176,8 @@ export default function StockDetails({ match }: any) {
       <Modal visible={modalVisible} transparent animationType="fade">
         <SCModal.Background>
           <SCModal.InvisibleArea onPress={() => setModalVisible(false)} />
-          <SCModal.FocusBlock title="Registrar uma transação">
+          <BaseFocusBlock>
+            <SCModal.Header>Registrar uma Transação</SCModal.Header>
             <SwitchSelector
               backgroundColor={theme.palette.background.main}
               textColor={theme.palette.background.contrastText}
@@ -222,7 +224,7 @@ export default function StockDetails({ match }: any) {
             {showDatePicker && (
               <DateTimePicker mode="date" value={date} onChange={handleDateChange} maximumDate={new Date()} />
             )}
-          </SCModal.FocusBlock>
+          </BaseFocusBlock>
         </SCModal.Background>
       </Modal>
       <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderFunction} isLoading={isLoading} />

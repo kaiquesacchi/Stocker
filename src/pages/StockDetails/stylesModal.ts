@@ -1,5 +1,4 @@
 import styled from "styled-components/native";
-import BaseFocusBlock from "../../components/FocusBlocks/Base";
 
 export const Background = styled.View`
   background-color: #000c;
@@ -8,9 +7,10 @@ export const Background = styled.View`
 export const InvisibleArea = styled.TouchableOpacity`
   flex: 1;
 `;
-export const FocusBlock = styled(BaseFocusBlock)`
-  padding: 20px;
-  margin-bottom: 0;
+export const Header = styled.Text`
+  color: ${(props) => props.theme.palette.focusBlock.contrastText};
+  font-size: 16px;
+  margin-bottom: 20px;
 `;
 
 export const TextInput = styled.TextInput`

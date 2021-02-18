@@ -6,13 +6,11 @@ interface iSCList {
   horizontal?: boolean;
 }
 const SCList = styled.View<iSCList>`
-  padding: 10px 0;
   flex-direction: ${(props) => (props.horizontal ? "row" : "column")};
   justify-content: space-around;
 `;
 const SCIsEmptyText = styled.Text`
   color: ${(props) => props.theme.palette.focusBlock.contrastText + props.theme.secondaryTextOpacity};
-  padding: 20px 0;
   font-size: 14px;
 `;
 
