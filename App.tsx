@@ -11,11 +11,16 @@ if (__DEV__) {
 }
 
 function SettingsLoader({ children }: { children: React.ReactNode }) {
-  const themeContext = useTheme();
+  const [theme, themeName, setTheme] = useTheme();
   useEffect(() => {
-    LoadSavedTheme(themeContext);
+    LoadSavedTheme([theme, themeName, setTheme]);
   }, []);
-  return <React.Fragment>{children}</React.Fragment>;
+  return (
+    <React.Fragment>
+      <StatusBar style={theme.statusBar} />
+      {children}
+    </React.Fragment>
+  );
 }
 
 export default function App() {
@@ -24,7 +29,6 @@ export default function App() {
       <ActiveTabContextProvider>
         <LoadingStockDataContextProvider>
           <SettingsLoader>
-            <StatusBar style="light" />
             <Router />
           </SettingsLoader>
         </LoadingStockDataContextProvider>

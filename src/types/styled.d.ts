@@ -6,6 +6,7 @@ interface iPalette {
 }
 declare module "styled-components" {
   export interface DefaultTheme {
+    statusBar: "light" | "dark";
     secondaryTextOpacity: string;
     palette: {
       primary: iPalette;

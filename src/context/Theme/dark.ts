@@ -1,6 +1,7 @@
 import { DefaultTheme } from "styled-components";
 
 const dark: DefaultTheme = {
+  statusBar: "light",
   secondaryTextOpacity: "d0",
   palette: {
     primary: {
