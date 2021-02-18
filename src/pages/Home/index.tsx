@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, View } from "react-native";
+import { ProgressChart } from "react-native-chart-kit";
+import { useHistory } from "react-router-native";
 
 import useLoadingStockDataContext from "../../context/LoadingStockData";
+import useTheme from "../../context/Theme";
 
 import Navigation from "../../components/BottomBars/Navigation";
 import ListFocusBlock from "../../components/FocusBlocks/List";
-
 import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
-
-import { SCHorizontalListItem, SCListItem, SCTitle, SCValue } from "./styles";
-
-import { ProgressChart } from "react-native-chart-kit";
-import { getAllData } from "../../services/GoogleFinanceAPI";
 
 import MyWalletController from "../../controllers/MyWallet";
 import StockDataController from "../../controllers/StockData";
+
+import GoogleFinanceAPIService from "../../services/GoogleFinanceAPI";
 import CurrencyService from "../../services/Currency";
-import useTheme from "../../context/Theme";
-import { useHistory } from "react-router-native";
+
+import { SCHorizontalListItem, SCListItem, SCTitle, SCValue } from "./styles";
 
 /* Chart legend. */
 interface iLegendDataItem {
@@ -80,7 +79,7 @@ export default function Home() {
   const buttons: iButton[] = [
     {
       name: "cached",
-      onPress: () => getAllData(setIsLoading),
+      onPress: () => GoogleFinanceAPIService.getAllData(setIsLoading),
     },
     {
       name: "settings",

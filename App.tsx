@@ -5,6 +5,7 @@ import Router from "./src/pages";
 import { ActiveTabContextProvider } from "./src/context/ActiveTab";
 import { LoadingStockDataContextProvider } from "./src/context/LoadingStockData";
 import useTheme, { ThemeContextProvider, LoadSavedTheme } from "./src/context/Theme";
+import useSettings, { SettingsContextProvider, LoadSavedSettings } from "./src/context/Settings";
 
 if (__DEV__) {
   import("./dev/ReactotronConfig");
@@ -12,9 +13,13 @@ if (__DEV__) {
 
 function SettingsLoader({ children }: { children: React.ReactNode }) {
   const [theme, themeName, setTheme] = useTheme();
+  const settingsTools = useSettings();
+
   useEffect(() => {
     LoadSavedTheme([theme, themeName, setTheme]);
+    LoadSavedSettings(settingsTools);
   }, []);
+
   return (
     <React.Fragment>
       <StatusBar style={theme.statusBar} />
@@ -25,14 +30,16 @@ function SettingsLoader({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <ThemeContextProvider>
-      <ActiveTabContextProvider>
-        <LoadingStockDataContextProvider>
-          <SettingsLoader>
-            <Router />
-          </SettingsLoader>
-        </LoadingStockDataContextProvider>
-      </ActiveTabContextProvider>
-    </ThemeContextProvider>
+    <SettingsContextProvider>
+      <ThemeContextProvider>
+        <ActiveTabContextProvider>
+          <LoadingStockDataContextProvider>
+            <SettingsLoader>
+              <Router />
+            </SettingsLoader>
+          </LoadingStockDataContextProvider>
+        </ActiveTabContextProvider>
+      </ThemeContextProvider>
+    </SettingsContextProvider>
   );
 }
