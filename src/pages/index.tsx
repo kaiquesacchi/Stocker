@@ -4,6 +4,7 @@ import { NativeRouter, Route, Redirect } from "react-router-native";
 import Home from "./Home";
 import MyWallet from "./MyWallet";
 import SearchStock from "./SearchStock";
+import Settings from "./Settings";
 import StockDetails from "./StockDetails";
 
 export default function Router() {
@@ -12,6 +13,7 @@ export default function Router() {
       <Route exact path="/" component={Home} />
       <Route exact path="/my-wallet" component={MyWallet} />
       <Route exact path="/search-stocks" component={SearchStock} />
+      <Route exact path="/settings" component={Settings} />
       <Route exact path="/stock-details/:stockSymbol" component={StockDetails} />
       <Route path="*" component={() => <Redirect to="/" />} />
     </NativeRouter>

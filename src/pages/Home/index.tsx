@@ -17,6 +17,7 @@ import MyWalletController from "../../controllers/MyWallet";
 import StockDataController from "../../controllers/StockData";
 import CurrencyService from "../../services/Currency";
 import useTheme from "../../context/Theme";
+import { useHistory } from "react-router-native";
 
 /* Chart legend. */
 interface iLegendDataItem {
@@ -46,6 +47,7 @@ const summaryRenderFunction = (item: iSummaryDataItem, index: number) => (
 /* End of Summary Info. */
 
 export default function Home() {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useLoadingStockDataContext();
   const [theme] = useTheme();
   const [wallet30Change, setWallet30Change] = useState(0);
@@ -79,6 +81,10 @@ export default function Home() {
     {
       name: "cached",
       onPress: () => getAllData(setIsLoading),
+    },
+    {
+      name: "settings",
+      onPress: () => history.push("/settings"),
     },
   ];
 
