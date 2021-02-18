@@ -22,7 +22,6 @@ export default function Settings() {
       alert("Valor obrigatório.");
       return;
     }
-    console.log(GoogleFinanceURL);
     setSettings({ key: "GoogleFinanceURL", value: GoogleFinanceURL });
     alert("Valor atualizado.");
 

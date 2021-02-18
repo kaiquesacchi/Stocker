@@ -5,6 +5,7 @@ import { useHistory } from "react-router-native";
 
 import useLoadingStockDataContext from "../../context/LoadingStockData";
 import useTheme from "../../context/Theme";
+import useSettings from "../../context/Settings";
 
 import Navigation from "../../components/BottomBars/Navigation";
 import ListFocusBlock from "../../components/FocusBlocks/List";
@@ -49,6 +50,8 @@ export default function Home() {
   const history = useHistory();
   const [isLoading, setIsLoading] = useLoadingStockDataContext();
   const [theme] = useTheme();
+  const [settings] = useSettings();
+
   const [wallet30Change, setWallet30Change] = useState(0);
   const [currentInvested, setCurrentInvested] = useState(0);
   const [currentEarnings, setCurrentEarnings] = useState(0);
@@ -79,7 +82,7 @@ export default function Home() {
   const buttons: iButton[] = [
     {
       name: "cached",
-      onPress: () => GoogleFinanceAPIService.getAllData(setIsLoading),
+      onPress: () => GoogleFinanceAPIService.getAllData(setIsLoading, settings["GoogleFinanceURL"]),
     },
     {
       name: "settings",

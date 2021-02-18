@@ -38,14 +38,14 @@ export function SettingsContextProvider({ children }: { children: React.ReactNod
 
 export async function LoadSavedSettings([settings, setSettings]: typeSettingsContext) {
   return Promise.all(
-    Object.keys(settings).map((key) => {
+    Object.keys(settings).map(async (key) => {
       const defaultValue = settings[key as typeSettingsKey];
-      AsyncStorage.getItem("_SETTINGS/" + key).then((result) => {
-        if (result === null) setSettings({ key: key as typeSettingsKey, value: defaultValue });
-        else if (result !== defaultValue) {
-          setSettings({ key: key as typeSettingsKey, value: result });
-        }
-      });
+      const result = await AsyncStorage.getItem("_SETTINGS/" + key);
+      if (result === null) {
+        setSettings({ key: key as typeSettingsKey, value: defaultValue });
+      } else if (result !== defaultValue) {
+        setSettings({ key: key as typeSettingsKey, value: result });
+      }
     })
   );
 }

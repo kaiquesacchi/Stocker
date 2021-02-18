@@ -6,6 +6,9 @@ import { ActiveTabContextProvider } from "./src/context/ActiveTab";
 import { LoadingStockDataContextProvider } from "./src/context/LoadingStockData";
 import useTheme, { ThemeContextProvider, LoadSavedTheme } from "./src/context/Theme";
 import useSettings, { SettingsContextProvider, LoadSavedSettings } from "./src/context/Settings";
+import useLoadingStockData from "./src/context/LoadingStockData";
+
+import GoogleFinanceAPIService from "./src/services/GoogleFinanceAPI";
 
 if (__DEV__) {
   import("./dev/ReactotronConfig");
@@ -13,12 +16,18 @@ if (__DEV__) {
 
 function SettingsLoader({ children }: { children: React.ReactNode }) {
   const [theme, themeName, setTheme] = useTheme();
-  const settingsTools = useSettings();
+  const [settings, setSettings] = useSettings();
+  const [_, setIsLoading] = useLoadingStockData();
 
   useEffect(() => {
     LoadSavedTheme([theme, themeName, setTheme]);
-    LoadSavedSettings(settingsTools);
+    LoadSavedSettings([settings, setSettings]);
   }, []);
+
+  useEffect(() => {
+    if (settings.GoogleFinanceURL === "") return;
+    GoogleFinanceAPIService.getAllData(setIsLoading, settings.GoogleFinanceURL);
+  }, [settings]);
 
   return (
     <React.Fragment>
