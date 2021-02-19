@@ -81,11 +81,11 @@ export default function Home() {
 
   const buttons: iButton[] = [
     {
-      name: "cached",
+      name: "reload-outline",
       onPress: () => GoogleFinanceAPIService.getAllData(setIsLoading, settings["GoogleFinanceURL"]),
     },
     {
-      name: "settings",
+      name: "settings-outline",
       onPress: () => history.push("/settings"),
     },
   ];
@@ -114,8 +114,8 @@ export default function Home() {
         backgroundGradientTo: theme.palette.background.main,
       }}
       width={Dimensions.get("window").width}
-      height={220}
-      radius={50}
+      height={230}
+      radius={30}
       hideLegend
     />
   );

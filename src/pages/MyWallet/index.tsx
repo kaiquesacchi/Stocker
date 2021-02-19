@@ -60,7 +60,7 @@ export default function MyWallet() {
       <AppBarLayout
         title="Minha Carteira"
         hasNavigationBar
-        buttons={isSelecting ? [] : [{ name: "delete", onPress: startRemoving }]}>
+        buttons={isSelecting ? [] : [{ name: "trash-bin-outline", onPress: startRemoving }]}>
         {stockDataList.map((stockData, index) => (
           <SCTouchableOpacity key={index} onPress={() => handleSelect(index)}>
             {isSelecting && (

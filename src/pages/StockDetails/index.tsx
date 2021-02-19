@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-native";
 
-import { Button, Dimensions, TextInput } from "react-native";
+import { Button, Dimensions, TextInput, View } from "react-native";
 import SwitchSelector from "react-native-switch-selector";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
@@ -11,10 +11,11 @@ import ListFocusBlock from "../../components/FocusBlocks/List";
 import BaseDialog from "../../components/Dialog/Base";
 
 import StockDataController from "../../controllers/StockData";
-import MyWalletController from "../../controllers/MyWallet";
+import MyWalletController, { iWalletStockRegistry, iTrade } from "../../controllers/MyWallet";
 
 import { iGoogleFinanceStockData } from "../../services/GoogleFinanceAPI";
 import CurrencyService from "../../services/Currency";
+import DateService from "../../services/Date";
 
 import useLoadingStockDataContext from "../../context/LoadingStockData";
 import useTheme from "../../context/Theme";
@@ -48,42 +49,50 @@ export default function StockDetails({ match }: any) {
     "Alta do Dia": "Não Disponível",
     "Baixa do Dia": "Não Disponível",
   });
+  const [onWallet, setOnWallet] = useState<iWalletStockRegistry>();
 
-  useEffect(() => {
-    const symbol = match.params.stockSymbol;
-    StockDataController.getBySymbol(symbol)
-      .then((response) => {
-        setData(response);
+  const loadData = useCallback(
+    async (symbol) => {
+      try {
+        const result = await StockDataController.getBySymbol(symbol);
+        setData(result);
         setFormattedData({
-          Código: response.Symbol,
-          "Nome da Empresa": response.Name,
-          "Preço Atual": response.Price !== null ? "R$" + CurrencyService.toReadable(response.Price) : "Não Disponível",
+          Código: result.Symbol,
+          "Nome da Empresa": result.Name,
+          "Preço Atual": result.Price !== null ? "R$" + CurrencyService.toReadable(result.Price) : "Não Disponível",
           "Mudança Percentual do Dia":
-            response.Change !== null ? CurrencyService.toReadable(response.Change) + "%" : "Não Disponível",
+            result.Change !== null ? CurrencyService.toReadable(result.Change) + "%" : "Não Disponível",
           "Relação Preço Lucro (P/L)":
-            response["P/E"] !== null ? CurrencyService.toReadable(response["P/E"]) : "Não Disponível",
-          "Lucro por Ação (LPA)":
-            response["EPS"] !== null ? CurrencyService.toReadable(response["EPS"]) : "Não Disponível",
-          "Alta do Dia": response.High !== null ? "R$" + CurrencyService.toReadable(response.High) : "Não Disponível",
-          "Baixa do Dia": response.Low !== null ? "R$" + CurrencyService.toReadable(response.Low) : "Não Disponível",
+            result["P/E"] !== null ? CurrencyService.toReadable(result["P/E"]) : "Não Disponível",
+          "Lucro por Ação (LPA)": result["EPS"] !== null ? CurrencyService.toReadable(result["EPS"]) : "Não Disponível",
+          "Alta do Dia": result.High !== null ? "R$" + CurrencyService.toReadable(result.High) : "Não Disponível",
+          "Baixa do Dia": result.Low !== null ? "R$" + CurrencyService.toReadable(result.Low) : "Não Disponível",
         });
-      })
-      .catch((e) => {
+      } catch (e) {
         if (e === "Stock not found.") alert("Ação não encontrada.");
         else {
           alert("Erro desconhecido.");
           console.warn(e);
         }
         history.goBack();
-      });
-  }, [history]);
-
-  const renderFunction = (key: keyof typeof formattedData, index: number) => (
-    <SC.ItemList key={index} first={index === 0}>
-      <SC.TitleText>{key}</SC.TitleText>
-      <SC.ValueText>{formattedData[key]}</SC.ValueText>
-    </SC.ItemList>
+      }
+    },
+    [setData, setFormattedData]
   );
+
+  const loadOnWallet = useCallback(
+    async (symbol: string) => {
+      const result = await MyWalletController.getBySymbol(symbol);
+      setOnWallet(result);
+    },
+    [setOnWallet]
+  );
+
+  useEffect(() => {
+    const symbol = match.params.stockSymbol;
+    loadData(symbol);
+    loadOnWallet(symbol);
+  }, [history]);
 
   /* Modal Config. */
   const [modalVisible, setModalVisible] = useState(false);
@@ -163,7 +172,7 @@ export default function StockDetails({ match }: any) {
         },
       }}
       width={Dimensions.get("window").width}
-      height={250}
+      height={230}
       withDots={false}
       withHorizontalLines={true}
       withVerticalLines={false}
@@ -174,6 +183,26 @@ export default function StockDetails({ match }: any) {
       yAxisLabel="R$"
     />
   );
+
+  const renderInfo = (key: keyof typeof formattedData, index: number) => (
+    <SC.ItemList key={index} first={index === 0}>
+      <SC.TitleText>{key}</SC.TitleText>
+      <SC.ValueText>{formattedData[key]}</SC.ValueText>
+    </SC.ItemList>
+  );
+
+  const renderTrades = (trade: iTrade, index: number) => (
+    <SC.AvatarItem key={index} first={index === 0}>
+      <SC.Icon name={trade.amount > 0 ? "caret-up-circle" : "caret-down-circle"} size={60} />
+      <View>
+        <SC.TitleText>{DateService.toReadable(trade.date)}</SC.TitleText>
+        <SC.ValueText>{`${Math.abs(trade.amount)} cotas a R$${CurrencyService.toReadable(
+          trade.unitaryPrice
+        )} cada.`}</SC.ValueText>
+      </View>
+    </SC.AvatarItem>
+  );
+
   return (
     <AppBarLayout title={data.Symbol} backButton buttons={buttons} altBanner={altBanner}>
       <BaseDialog
@@ -220,7 +249,8 @@ export default function StockDetails({ match }: any) {
           <DateTimePicker mode="date" value={date} onChange={handleDateChange} maximumDate={new Date()} />
         )}
       </BaseDialog>
-      <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderFunction} isLoading={isLoading} />
+      <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderInfo} isLoading={isLoading} />
+      {onWallet && <ListFocusBlock title="Minhas Transações" data={onWallet.trades} renderFunction={renderTrades} />}
     </AppBarLayout>
   );
 }

@@ -1,12 +1,12 @@
 import { AsyncStorage } from "react-native";
 import StockDataController from "../StockData";
 
-interface iTrade {
+export interface iTrade {
   amount: number;
   unitaryPrice: number;
   date: Date;
 }
-interface iWalletStockRegistry {
+export interface iWalletStockRegistry {
   currentAmount: number;
   totalSpent: number;
   totalSold: number;
@@ -21,6 +21,11 @@ export default class MyWallet {
   static getMyWallet = async (): Promise<iWallet> => {
     const myWalletJSON = await AsyncStorage.getItem("_myWallet");
     return JSON.parse(myWalletJSON || "{}");
+  };
+
+  static getBySymbol = async (symbol: string) => {
+    let myWallet = await MyWallet.getMyWallet();
+    return myWallet[symbol];
   };
 
   static getMyDetailedWallet = async () => {

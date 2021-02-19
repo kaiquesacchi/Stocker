@@ -1,19 +1,8 @@
 import React, { useState } from "react";
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { useHistory } from "react-router-native";
-import {
-  SCBanner,
-  SCTopMargin,
-  SCStickyHeader,
-  SCBigHeader,
-  SCAltBanner,
-  SCContent,
-  SCMaterialIcons,
-  SCPage,
-  SCSmallHeader,
-  SCStickyHeaderTitle,
-  SCStickyHeaderButtons,
-} from "./styles";
+
+import * as SC from "./styles";
 
 export interface iButton {
   name: string;
@@ -36,7 +25,7 @@ export default function AppBarLayout({ title, backButton, altBanner, hasNavigati
     history.goBack();
   };
 
-  const bannerHeight = 280;
+  const bannerHeight = 250;
 
   const [bannerPadding, setBannerPadding] = useState(0);
   const [bannerOpacity, setBannerOpacity] = useState(1);
@@ -46,7 +35,7 @@ export default function AppBarLayout({ title, backButton, altBanner, hasNavigati
     let pageYOffset = event.nativeEvent.contentOffset.y;
     if (pageYOffset < 0) pageYOffset = 0; // When gliding upwards, may turn negative for a few frames.
     if (pageYOffset <= bannerHeight) {
-      setBannerPadding(pageYOffset);
+      setBannerPadding(pageYOffset + 50);
       setHeaderOpacity(1 - (bannerHeight - pageYOffset) / (pageYOffset + 0.1));
       setBannerOpacity((bannerHeight - pageYOffset) / (pageYOffset + 0.1));
     } else {
@@ -55,31 +44,30 @@ export default function AppBarLayout({ title, backButton, altBanner, hasNavigati
   };
 
   return (
-    <SCPage onScroll={handleScroll} stickyHeaderIndices={[0, 2]}>
-      <SCTopMargin />
-      <SCBanner height={bannerHeight} isAltBanner={!!altBanner}>
+    <SC.Page onScroll={handleScroll} stickyHeaderIndices={[1]}>
+      <SC.Banner height={bannerHeight} isAltBanner={!!altBanner}>
         {altBanner ? (
-          <SCAltBanner opacity={bannerOpacity} marginTop={bannerPadding}>
+          <SC.AltBanner opacity={bannerOpacity} marginTop={bannerPadding}>
             {altBanner}
-          </SCAltBanner>
+          </SC.AltBanner>
         ) : (
-          <SCBigHeader opacity={bannerOpacity} marginTop={bannerPadding}>
+          <SC.BigHeader opacity={bannerOpacity} marginTop={bannerPadding}>
             {title}
-          </SCBigHeader>
+          </SC.BigHeader>
         )}
-      </SCBanner>
-      <SCStickyHeader>
-        <SCStickyHeaderTitle>
-          {backButton && <SCMaterialIcons name="arrow-back-ios" onPress={handleBackButton} size={25} />}
-          <SCSmallHeader opacity={headerOpacity}>{title}</SCSmallHeader>
-        </SCStickyHeaderTitle>
-        <SCStickyHeaderButtons>
+      </SC.Banner>
+      <SC.StickyHeader>
+        <SC.StickyHeaderTitle>
+          {backButton && <SC.Icons name="chevron-back" onPress={handleBackButton} size={30} />}
+          <SC.SmallHeader opacity={headerOpacity}>{title}</SC.SmallHeader>
+        </SC.StickyHeaderTitle>
+        <SC.StickyHeaderButtons>
           {buttons?.map((button, index) => (
-            <SCMaterialIcons key={index} name={button.name} onPress={button.onPress} size={25} />
+            <SC.Icons key={index} name={button.name} onPress={button.onPress} size={30} />
           ))}
-        </SCStickyHeaderButtons>
-      </SCStickyHeader>
-      <SCContent hasNavigationBar={hasNavigationBar}>{children}</SCContent>
-    </SCPage>
+        </SC.StickyHeaderButtons>
+      </SC.StickyHeader>
+      <SC.Content hasNavigationBar={hasNavigationBar}>{children}</SC.Content>
+    </SC.Page>
   );
 }
