@@ -153,22 +153,24 @@ export default function StockDetails({ match }: any) {
         ],
       }}
       chartConfig={{
-        color: (opacity = 1) =>
-          theme.palette.primary.main +
-          Math.floor(opacity * 255)
-            .toString(16)
-            .padStart(2, "0"),
+        color: () => theme.palette.primary.main,
+        labelColor: () => theme.palette.background.contrastText,
         backgroundGradientFrom: theme.palette.background.main,
         backgroundGradientTo: theme.palette.background.main,
+        propsForBackgroundLines: {
+          stroke: theme.palette.background.contrastText + "50",
+        },
       }}
       width={Dimensions.get("window").width}
       height={250}
       withDots={false}
-      withInnerLines={false}
+      withHorizontalLines={true}
+      withVerticalLines={false}
+      segments={3}
       withOuterLines={false}
       withVerticalLabels={false}
       withShadow={false}
-      yAxisLabel="R$ "
+      yAxisLabel="R$"
     />
   );
   return (
