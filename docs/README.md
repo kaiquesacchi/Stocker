@@ -2,7 +2,7 @@
 
 Stocker lets you keep track of your investments, as well of the stocks in your interest.
 
-> Design based on Samsung's One UI
+> Design based on [Samsung's One UI](http://design.samsung.com/global/contents/one-ui/download/oneui_design_guide_eng.pdf)
 
 > Developed using React Native and Expo
 
@@ -52,3 +52,16 @@ npm install --global expo-cli
 6. Using a web browser, access the server and select **_run on Android device/emulator_** or **_run on iOS simulator_**, on the sidebar.
 
 The app will be started in the emulated (or plugged) device.
+
+## VSCode Debugger
+
+Before setting up the debugger, make sure to have the development environment up and running.
+
+> Also, turn off the Remote Debbuging option on the Expo Develpment Tool.
+
+1. Install the `React Native Tools` VSCode extension.
+2. Open the VSCode Debug menu and select `create a launch.json file`.
+3. On the pop-up menu, select `React Native` and `Attach to packager`. A `launch.json` file will be generated.
+4. On `launch.json`'s `Attach to packager` entry, add `"port": 19000` (Expo debugging port).
+5. On the top of the Debug menu, select `Attach to packager` on the drop-down input, and hit play.
+6. On the device emulator, open Expo Development tools (Ctrl + M) and start remote debugging.
