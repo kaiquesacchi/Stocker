@@ -1,25 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-native";
 
-import { Button, Dimensions, Modal, TextInput } from "react-native";
+import { Button, Dimensions, TextInput } from "react-native";
 import SwitchSelector from "react-native-switch-selector";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
 
 import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
 import ListFocusBlock from "../../components/FocusBlocks/List";
-import BaseFocusBlock from "../../components/FocusBlocks/Base";
+import BaseDialog from "../../components/Dialog/Base";
 
 import StockDataController from "../../controllers/StockData";
 import MyWalletController from "../../controllers/MyWallet";
 
 import { iGoogleFinanceStockData } from "../../services/GoogleFinanceAPI";
+import CurrencyService from "../../services/Currency";
+
+import useLoadingStockDataContext from "../../context/LoadingStockData";
+import useTheme from "../../context/Theme";
 
 import * as SC from "./styles";
 import * as SCModal from "./stylesModal";
-import CurrencyService from "../../services/Currency";
-import useLoadingStockDataContext from "../../context/LoadingStockData";
-import useTheme from "../../context/Theme";
 
 export default function StockDetails({ match }: any) {
   const [theme] = useTheme();
@@ -175,60 +176,50 @@ export default function StockDetails({ match }: any) {
   );
   return (
     <AppBarLayout title={data.Symbol} backButton buttons={buttons} altBanner={altBanner}>
-      <Modal visible={modalVisible} transparent animationType="fade">
-        <SCModal.Background>
-          <SCModal.InvisibleArea onPress={() => setModalVisible(false)} />
-          <BaseFocusBlock>
-            <SCModal.Header>Registrar uma Transação</SCModal.Header>
-            <SwitchSelector
-              backgroundColor={theme.palette.background.main}
-              textColor={theme.palette.background.contrastText}
-              buttonColor={theme.palette.secondary.main}
-              selectedColor={theme.palette.secondary.contrastText}
-              options={[
-                { label: "Compra", value: "buy" },
-                { label: "Venda", value: "sell" },
-              ]}
-              initial={0}
-              onPress={handleChangeTradeType}
-            />
-            <SCModal.TextInput
-              ref={inputAmount}
-              placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
-              placeholder="Quantidade"
-              keyboardType="numeric"
-              onChangeText={setAmount}
-            />
-            <SCModal.TextInput
-              ref={inputPrice}
-              placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
-              placeholder="Preço"
-              keyboardType="numeric"
-              onChangeText={setPrice}
-            />
-            <SCModal.Text>Selecione a data da transação</SCModal.Text>
-            <Button
-              title={date !== undefined ? date.toDateString() : "Data da Transação"}
-              onPress={() => setShowDatePicker(true)}
-              color={theme.palette.secondary.main}
-            />
-            <SCModal.ActionButtonArea>
-              <SCModal.ActionButton
-                onPress={() => {
-                  setModalVisible(false);
-                }}>
-                <SCModal.ActionButtonText>Cancelar</SCModal.ActionButtonText>
-              </SCModal.ActionButton>
-              <SCModal.ActionButton onPress={handleSaveTrade}>
-                <SCModal.ActionButtonText>Salvar</SCModal.ActionButtonText>
-              </SCModal.ActionButton>
-            </SCModal.ActionButtonArea>
-            {showDatePicker && (
-              <DateTimePicker mode="date" value={date} onChange={handleDateChange} maximumDate={new Date()} />
-            )}
-          </BaseFocusBlock>
-        </SCModal.Background>
-      </Modal>
+      <BaseDialog
+        header="Registrar uma Transação"
+        confirmText="Salvar"
+        handleConfirm={handleSaveTrade}
+        hideModal={() => {
+          setModalVisible(false);
+        }}
+        modalVisible={modalVisible}>
+        <SwitchSelector
+          backgroundColor={theme.palette.background.main}
+          textColor={theme.palette.background.contrastText}
+          buttonColor={theme.palette.secondary.main}
+          selectedColor={theme.palette.secondary.contrastText}
+          options={[
+            { label: "Compra", value: "buy" },
+            { label: "Venda", value: "sell" },
+          ]}
+          initial={0}
+          onPress={handleChangeTradeType}
+        />
+        <SCModal.TextInput
+          ref={inputAmount}
+          placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
+          placeholder="Quantidade"
+          keyboardType="numeric"
+          onChangeText={setAmount}
+        />
+        <SCModal.TextInput
+          ref={inputPrice}
+          placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
+          placeholder="Preço"
+          keyboardType="numeric"
+          onChangeText={setPrice}
+        />
+        <SCModal.Text>Selecione a data da transação</SCModal.Text>
+        <Button
+          title={date !== undefined ? date.toDateString() : "Data da Transação"}
+          onPress={() => setShowDatePicker(true)}
+          color={theme.palette.secondary.main}
+        />
+        {showDatePicker && (
+          <DateTimePicker mode="date" value={date} onChange={handleDateChange} maximumDate={new Date()} />
+        )}
+      </BaseDialog>
       <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderFunction} isLoading={isLoading} />
     </AppBarLayout>
   );
