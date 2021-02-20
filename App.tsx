@@ -21,13 +21,11 @@ function SettingsLoader({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     LoadSavedTheme([theme, themeName, setTheme]);
-    LoadSavedSettings([settings, setSettings]);
+    LoadSavedSettings([settings, setSettings]).then((loadedSettings) => {
+      if (!(loadedSettings.loadDataOnInit === "true") || loadedSettings.GoogleFinanceURL === "") return;
+      GoogleFinanceAPIService.getAllData(setIsLoading, loadedSettings.GoogleFinanceURL);
+    });
   }, []);
-
-  useEffect(() => {
-    if (settings.GoogleFinanceURL === "") return;
-    GoogleFinanceAPIService.getAllData(setIsLoading, settings.GoogleFinanceURL);
-  }, [settings]);
 
   return (
     <React.Fragment>

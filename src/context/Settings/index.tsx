@@ -3,6 +3,7 @@ import { AsyncStorage } from "react-native";
 
 interface iSettings {
   GoogleFinanceURL: string;
+  loadDataOnInit: string;
 }
 type typeSettingsKey = keyof iSettings;
 interface iKeyValue {
@@ -11,7 +12,7 @@ interface iKeyValue {
 }
 type typeSettingsContext = [iSettings, ({}: iKeyValue) => void];
 
-const defaultValue: typeSettingsContext = [{ GoogleFinanceURL: "" }, ({ key, value }) => {}];
+const defaultValue: typeSettingsContext = [{ GoogleFinanceURL: "", loadDataOnInit: "true" }, ({ key, value }) => {}];
 const SettingsContext = createContext(defaultValue);
 
 /**
@@ -42,10 +43,13 @@ export async function LoadSavedSettings([settings, setSettings]: typeSettingsCon
       const defaultValue = settings[key as typeSettingsKey];
       const result = await AsyncStorage.getItem("_SETTINGS/" + key);
       if (result === null) {
-        setSettings({ key: key as typeSettingsKey, value: defaultValue });
-      } else if (result !== defaultValue) {
+        AsyncStorage.setItem("_SETTINGS/" + key, defaultValue);
+        return [key, defaultValue];
+      }
+      if (result !== defaultValue) {
         setSettings({ key: key as typeSettingsKey, value: result });
       }
+      return [key, result];
     })
-  );
+  ).then((results) => Object.fromEntries(results));
 }

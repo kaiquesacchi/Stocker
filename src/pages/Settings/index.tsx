@@ -30,10 +30,21 @@ export default function Settings() {
 
   return (
     <AppBarLayout title="Ajustes" backButton>
-      <SC.BaseFocusBlockToggle title="Personalização">
-        <SC.Title>Modo Escuro</SC.Title>
-        <Switch value={themeName === "dark"} onValueChange={(value) => setTheme(value ? "dark" : "light")} />
-      </SC.BaseFocusBlockToggle>
+      <BaseFocusBlock title="Personalização">
+        <SC.ListItem first>
+          <SC.Title>Modo Escuro</SC.Title>
+          <Switch value={themeName === "dark"} onValueChange={(value) => setTheme(value ? "dark" : "light")} />
+        </SC.ListItem>
+        <SC.ListItem>
+          <SC.Title>Atualizar Valores ao Iniciar</SC.Title>
+          <Switch
+            value={settings.loadDataOnInit === "true"}
+            onValueChange={(value) => {
+              setSettings({ key: "loadDataOnInit", value: value.toString() });
+            }}
+          />
+        </SC.ListItem>
+      </BaseFocusBlock>
       <BaseFocusBlock title="Configurações" onPress={() => setModalVisible(true)}>
         <SC.Title>URL da Planilha Google Finance</SC.Title>
         <SC.Value>{settings.GoogleFinanceURL}</SC.Value>
