@@ -3,16 +3,16 @@ import { AsyncStorage } from "react-native";
 
 interface iSettings {
   GoogleFinanceURL: string;
-  loadDataOnInit: string;
+  loadDataOnInit: boolean;
 }
 type typeSettingsKey = keyof iSettings;
 interface iKeyValue {
   key: typeSettingsKey;
-  value: string;
+  value: any;
 }
 type typeSettingsContext = [iSettings, ({}: iKeyValue) => void];
 
-const defaultValue: typeSettingsContext = [{ GoogleFinanceURL: "", loadDataOnInit: "true" }, ({ key, value }) => {}];
+const defaultValue: typeSettingsContext = [{ GoogleFinanceURL: "", loadDataOnInit: true }, ({ key, value }) => {}];
 const SettingsContext = createContext(defaultValue);
 
 /**
@@ -29,7 +29,7 @@ export default function useTheme(): typeSettingsContext {
  */
 export function SettingsContextProvider({ children }: { children: React.ReactNode }) {
   const reducer = (old: iSettings, { key, value }: iKeyValue) => {
-    AsyncStorage.setItem("_SETTINGS/" + key, value);
+    AsyncStorage.setItem("_SETTINGS/" + key, JSON.stringify(value));
     return { ...old, [key]: value };
   };
 
@@ -37,13 +37,13 @@ export function SettingsContextProvider({ children }: { children: React.ReactNod
   return <SettingsContext.Provider value={[settings, dispatch]}>{children}</SettingsContext.Provider>;
 }
 
-export async function LoadSavedSettings([settings, setSettings]: typeSettingsContext) {
+export async function LoadSavedSettings([settings, setSettings]: typeSettingsContext): Promise<iSettings> {
   return Promise.all(
     Object.keys(settings).map(async (key) => {
       const defaultValue = settings[key as typeSettingsKey];
-      const result = await AsyncStorage.getItem("_SETTINGS/" + key);
+      const result = JSON.parse((await AsyncStorage.getItem("_SETTINGS/" + key)) || "null");
       if (result === null) {
-        AsyncStorage.setItem("_SETTINGS/" + key, defaultValue);
+        AsyncStorage.setItem("_SETTINGS/" + key, JSON.stringify(defaultValue));
         return [key, defaultValue];
       }
       if (result !== defaultValue) {

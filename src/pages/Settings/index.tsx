@@ -38,9 +38,9 @@ export default function Settings() {
         <SC.ListItem>
           <SC.Title>Atualizar Valores ao Iniciar</SC.Title>
           <Switch
-            value={settings.loadDataOnInit === "true"}
+            value={settings.loadDataOnInit}
             onValueChange={(value) => {
-              setSettings({ key: "loadDataOnInit", value: value.toString() });
+              setSettings({ key: "loadDataOnInit", value: value });
             }}
           />
         </SC.ListItem>

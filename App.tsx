@@ -22,7 +22,7 @@ function SettingsLoader({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     LoadSavedTheme([theme, themeName, setTheme]);
     LoadSavedSettings([settings, setSettings]).then((loadedSettings) => {
-      if (!(loadedSettings.loadDataOnInit === "true") || loadedSettings.GoogleFinanceURL === "") return;
+      if (!loadedSettings.loadDataOnInit || loadedSettings.GoogleFinanceURL === "") return;
       GoogleFinanceAPIService.getAllData(setIsLoading, loadedSettings.GoogleFinanceURL);
     });
   }, []);
