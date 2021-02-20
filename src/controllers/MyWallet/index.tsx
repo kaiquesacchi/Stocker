@@ -18,17 +18,17 @@ interface iWallet {
 }
 
 export default class MyWallet {
-  static getMyWallet = async (): Promise<iWallet> => {
+  static async getMyWallet(): Promise<iWallet> {
     const myWalletJSON = await AsyncStorage.getItem("_myWallet");
     return JSON.parse(myWalletJSON || "{}");
-  };
+  }
 
-  static getBySymbol = async (symbol: string) => {
+  static async getBySymbol(symbol: string) {
     let myWallet = await MyWallet.getMyWallet();
     return myWallet[symbol];
-  };
+  }
 
-  static getMyDetailedWallet = async () => {
+  static async getMyDetailedWallet() {
     let myWallet = await MyWallet.getMyWallet();
     return Object.keys(myWallet).map(async (symbol) => {
       const stock = await StockDataController.getBySymbol(symbol);
@@ -40,14 +40,14 @@ export default class MyWallet {
         Amount: myWallet[symbol].currentAmount,
       };
     });
-  };
+  }
 
   /** Registers a new trade to your wallet.
    * @param symbol: Symbol of the traded stock. Ex: "ABCD4"
    * @param amount: Amount of stocks traded. If positive, represents a buying operation, whereas negative values represent selling.
    * @param unitaryPrice: Price of each stock traded, always positive.
    */
-  static addTrade = async (symbol: string, amount: number, unitaryPrice: number, date: Date) => {
+  static async addTrade(symbol: string, amount: number, unitaryPrice: number, date: Date) {
     let myWallet = await MyWallet.getMyWallet();
     if (!Object.keys(myWallet).includes(symbol)) {
       myWallet[symbol] = {
@@ -65,9 +65,50 @@ export default class MyWallet {
       date: date,
     });
     return AsyncStorage.setItem("_myWallet", JSON.stringify(myWallet));
-  };
+  }
 
-  static getFullStats = async () => {
+  /**
+   * Removes trades from the Wallet registry. If there are no trades left, removes the whole entry.
+   * Out of bounds indexes are ignored.
+   * @param symbol Symbol of the traded stock. Ex: "ABCD4"
+   * @param indexes Indexes of the trades from the trades's list that will be removed.
+   *
+   * @throws {"Symbol not on Wallet"} The symbol
+   */
+  static async removeTrades(symbol: string, indexes: number[]) {
+    let myWallet = await MyWallet.getMyWallet();
+    if (!Object.keys(myWallet).includes(symbol)) throw "Symbol not on Wallet";
+
+    let { currentAmount, totalSold, totalSpent, trades } = myWallet[symbol];
+    trades = trades.filter((trade, index) => {
+      if (indexes.includes(index)) {
+        currentAmount -= trade.amount;
+        if (trade.amount > 0) {
+          // Was a buying trade.
+          totalSpent -= trade.amount * trade.unitaryPrice;
+        } else {
+          // Was a selling trade.
+          totalSold -= -1 * trade.amount * trade.unitaryPrice;
+        }
+        return false;
+      }
+      return true;
+    });
+
+    // Removes entry if no trade is left.
+    if (trades.length === 0) delete myWallet[symbol];
+    else {
+      myWallet[symbol] = {
+        currentAmount: currentAmount,
+        totalSold: totalSold,
+        totalSpent: totalSpent,
+        trades: trades,
+      };
+    }
+    return AsyncStorage.setItem("_myWallet", JSON.stringify(myWallet));
+  }
+
+  static async getFullStats() {
     let myWallet = await MyWallet.getMyWallet();
 
     let currentInvested = 0;
@@ -90,11 +131,11 @@ export default class MyWallet {
       currentInvested: currentInvested,
       currentEarnings: currentInvested + soldMinusSpent,
     };
-  };
+  }
 
-  static removeFromWallet = async (symbols: string[]) => {
+  static async removeFromWallet(symbols: string[]) {
     let myWallet = await MyWallet.getMyWallet();
     symbols.forEach((symbol) => delete myWallet[symbol]);
     return AsyncStorage.setItem("_myWallet", JSON.stringify(myWallet));
-  };
+  }
 }

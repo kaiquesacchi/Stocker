@@ -13,6 +13,7 @@ import useLoadingStockDataContext from "../../context/LoadingStockData";
 import CheckBox from "@react-native-community/checkbox";
 
 import styled from "styled-components/native";
+import useTheme from "../../context/Theme";
 const SCTouchableOpacity = styled.TouchableOpacity`
   flex-direction: row;
   width: 100%;
@@ -25,6 +26,7 @@ export default function MyWallet() {
 
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedList, setSelectedList] = useState<boolean[]>([]);
+  const [theme] = useTheme();
 
   const loadWallet = () => {
     MyWalletController.getMyDetailedWallet().then((result) => {
@@ -64,7 +66,11 @@ export default function MyWallet() {
         {stockDataList.map((stockData, index) => (
           <SCTouchableOpacity key={index} onPress={() => handleSelect(index)}>
             {isSelecting && (
-              <CheckBox value={selectedList[index] || false} tintColors={{ true: "#71c7bb", false: "#aaa" }} disabled />
+              <CheckBox
+                value={selectedList[index] || false}
+                tintColors={{ true: theme.palette.primary.main, false: theme.palette.background.contrastText }}
+                disabled
+              />
             )}
             <StockFocusBlock
               stockData={stockData}

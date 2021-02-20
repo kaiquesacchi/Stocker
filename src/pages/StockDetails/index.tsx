@@ -9,6 +9,7 @@ import { LineChart } from "react-native-chart-kit";
 import AppBarLayout, { iButton } from "../../components/Layouts/AppBar";
 import ListFocusBlock from "../../components/FocusBlocks/List";
 import BaseDialog from "../../components/Dialog/Base";
+import BottomBarActionButtons from "../../components/BottomBars/ActionButtons";
 
 import StockDataController from "../../controllers/StockData";
 import MyWalletController, { iWalletStockRegistry, iTrade } from "../../controllers/MyWallet";
@@ -22,12 +23,14 @@ import useTheme from "../../context/Theme";
 
 import * as SC from "./styles";
 import * as SCModal from "./stylesModal";
+import CheckBox from "@react-native-community/checkbox";
 
 export default function StockDetails({ match }: any) {
   const [theme] = useTheme();
   const history = useHistory();
   const [isLoading] = useLoadingStockDataContext();
 
+  //#region Loading Data. =============================================================================================
   const [data, setData] = useState<iGoogleFinanceStockData>({
     Symbol: "",
     Name: "",
@@ -93,8 +96,9 @@ export default function StockDetails({ match }: any) {
     loadData(symbol);
     loadOnWallet(symbol);
   }, [history]);
+  //#endregion
 
-  /* Modal Config. */
+  //#region Modal Config. =============================================================================================
   const [modalVisible, setModalVisible] = useState(false);
   const [tradeType, setTradeType] = useState<"buy" | "sell">("buy");
   const [amount, setAmount] = useState("");
@@ -143,13 +147,56 @@ export default function StockDetails({ match }: any) {
     MyWalletController.addTrade(data.Symbol, parsedAmount, parsedPrice, date)
       .then(() => {
         alert("Registro realizado.");
+        loadOnWallet(data.Symbol);
       })
       .catch(() => alert("Erro ao salvar transação"))
       .finally(() => setModalVisible(false));
   };
-  /* End Modal Config. */
+  //#endregion
 
+  //#region Remove Trades. ============================================================================================
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [selectedList, setSelectedList] = useState<boolean[]>([]);
+
+  const startRemoving = () => {
+    if (!onWallet || !onWallet.trades) return;
+    setSelectedList(onWallet.trades.map((_) => false));
+    setIsSelecting(true);
+  };
+
+  const handleSelect = (index: number) => {
+    if (!isSelecting) return;
+    let selectedListCopy = [...selectedList];
+    selectedListCopy[index] = !selectedListCopy[index];
+    setSelectedList(selectedListCopy);
+  };
+
+  const remove = () => {
+    if (!onWallet || !onWallet.trades) return;
+    MyWalletController.removeTrades(
+      data.Symbol,
+      selectedList.flatMap((bool, index) => (bool ? index : []))
+    )
+      .then(() => {
+        loadOnWallet(data.Symbol);
+      })
+      .catch((error) => {
+        alert("Erro ao salvar transação");
+        console.dir(error);
+      })
+      .finally(() => {
+        setIsSelecting(false);
+      });
+  };
+
+  //#endregion
+
+  //#region Render Functions. =========================================================================================
   const buttons: iButton[] = [{ name: "add", onPress: handleOpenModal }];
+  const buttonsWithDelete: iButton[] = [
+    { name: "add", onPress: handleOpenModal },
+    { name: "trash-bin-outline", onPress: startRemoving },
+  ];
 
   const altBanner = (
     <LineChart
@@ -192,7 +239,14 @@ export default function StockDetails({ match }: any) {
   );
 
   const renderTrades = (trade: iTrade, index: number) => (
-    <SC.AvatarItem key={index} first={index === 0}>
+    <SC.AvatarItem key={index} first={index === 0} onPress={() => handleSelect(index)}>
+      {isSelecting && (
+        <CheckBox
+          value={selectedList[index] || false}
+          tintColors={{ true: theme.palette.primary.main, false: theme.palette.focusBlock.contrastText }}
+          disabled
+        />
+      )}
       <SC.Icon name={trade.amount > 0 ? "caret-up-circle" : "caret-down-circle"} size={60} />
       <View>
         <SC.TitleText>{DateService.toReadable(trade.date)}</SC.TitleText>
@@ -202,55 +256,70 @@ export default function StockDetails({ match }: any) {
       </View>
     </SC.AvatarItem>
   );
+  //#endregion
 
   return (
-    <AppBarLayout title={data.Symbol} backButton buttons={buttons} altBanner={altBanner}>
-      <BaseDialog
-        header="Registrar uma Transação"
-        confirmText="Salvar"
-        handleConfirm={handleSaveTrade}
-        hideModal={() => {
-          setModalVisible(false);
-        }}
-        modalVisible={modalVisible}>
-        <SwitchSelector
-          backgroundColor={theme.palette.background.main}
-          textColor={theme.palette.background.contrastText}
-          buttonColor={theme.palette.secondary.main}
-          selectedColor={theme.palette.secondary.contrastText}
-          options={[
-            { label: "Compra", value: "buy" },
-            { label: "Venda", value: "sell" },
-          ]}
-          initial={0}
-          onPress={handleChangeTradeType}
+    <View style={{ flex: 1 }}>
+      <AppBarLayout
+        title={data.Symbol}
+        backButton
+        buttons={isSelecting ? [] : onWallet && onWallet.trades.length !== 0 ? buttonsWithDelete : buttons}
+        altBanner={altBanner}
+        hasNavigationBar={isSelecting}>
+        <BaseDialog
+          header="Registrar uma Transação"
+          confirmText="Salvar"
+          handleConfirm={handleSaveTrade}
+          hideModal={() => {
+            setModalVisible(false);
+          }}
+          modalVisible={modalVisible}>
+          <SwitchSelector
+            backgroundColor={theme.palette.background.main}
+            textColor={theme.palette.background.contrastText}
+            buttonColor={theme.palette.secondary.main}
+            selectedColor={theme.palette.secondary.contrastText}
+            options={[
+              { label: "Compra", value: "buy" },
+              { label: "Venda", value: "sell" },
+            ]}
+            initial={0}
+            onPress={handleChangeTradeType}
+          />
+          <SCModal.TextInput
+            ref={inputAmount}
+            placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
+            placeholder="Quantidade"
+            keyboardType="numeric"
+            onChangeText={setAmount}
+          />
+          <SCModal.TextInput
+            ref={inputPrice}
+            placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
+            placeholder="Preço"
+            keyboardType="numeric"
+            onChangeText={setPrice}
+          />
+          <SCModal.Text>Selecione a data da transação</SCModal.Text>
+          <Button
+            title={date !== undefined ? date.toDateString() : "Data da Transação"}
+            onPress={() => setShowDatePicker(true)}
+            color={theme.palette.secondary.main}
+          />
+          {showDatePicker && (
+            <DateTimePicker mode="date" value={date} onChange={handleDateChange} maximumDate={new Date()} />
+          )}
+        </BaseDialog>
+        <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderInfo} isLoading={isLoading} />
+        {onWallet && <ListFocusBlock title="Minhas Transações" data={onWallet.trades} renderFunction={renderTrades} />}
+      </AppBarLayout>
+      {isSelecting && (
+        <BottomBarActionButtons
+          textAction="Excluir"
+          onPressCancel={() => setIsSelecting(false)}
+          onPressAction={remove}
         />
-        <SCModal.TextInput
-          ref={inputAmount}
-          placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
-          placeholder="Quantidade"
-          keyboardType="numeric"
-          onChangeText={setAmount}
-        />
-        <SCModal.TextInput
-          ref={inputPrice}
-          placeholderTextColor={theme.palette.focusBlock.contrastText + theme.secondaryTextOpacity}
-          placeholder="Preço"
-          keyboardType="numeric"
-          onChangeText={setPrice}
-        />
-        <SCModal.Text>Selecione a data da transação</SCModal.Text>
-        <Button
-          title={date !== undefined ? date.toDateString() : "Data da Transação"}
-          onPress={() => setShowDatePicker(true)}
-          color={theme.palette.secondary.main}
-        />
-        {showDatePicker && (
-          <DateTimePicker mode="date" value={date} onChange={handleDateChange} maximumDate={new Date()} />
-        )}
-      </BaseDialog>
-      <ListFocusBlock data={Object.keys(formattedData)} renderFunction={renderInfo} isLoading={isLoading} />
-      {onWallet && <ListFocusBlock title="Minhas Transações" data={onWallet.trades} renderFunction={renderTrades} />}
-    </AppBarLayout>
+      )}
+    </View>
   );
 }
