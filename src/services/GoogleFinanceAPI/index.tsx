@@ -1,6 +1,5 @@
 import { AsyncStorage } from "react-native";
 import csvToJson from "csvtojson";
-import { GOOGLE_FINANCE_URL } from "@env";
 
 export interface iGoogleFinanceStockData {
   Symbol: string;
@@ -19,7 +18,7 @@ function fromBackendToNumber(value: string) {
   return isNaN(parsedValue) ? null : parsedValue;
 }
 export default class GoogleFinanceAPI {
-  static async getAllData(setIsLoading: (newValue: boolean) => void, GoogleFinanceURL: string = GOOGLE_FINANCE_URL) {
+  static async getAllData(setIsLoading: (newValue: boolean) => void, GoogleFinanceURL: string) {
     setIsLoading(true);
     try {
       const response = await fetch(GoogleFinanceURL);

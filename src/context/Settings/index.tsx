@@ -1,5 +1,6 @@
 import React, { createContext, Reducer, useContext, useReducer } from "react";
 import { AsyncStorage } from "react-native";
+import { GOOGLE_FINANCE_URL } from "@env";
 
 interface iSettings {
   GoogleFinanceURL: string;
@@ -12,7 +13,10 @@ interface iKeyValue {
 }
 type typeSettingsContext = [iSettings, ({}: iKeyValue) => void];
 
-const defaultValue: typeSettingsContext = [{ GoogleFinanceURL: "", loadDataOnInit: true }, ({ key, value }) => {}];
+const defaultValue: typeSettingsContext = [
+  { GoogleFinanceURL: GOOGLE_FINANCE_URL, loadDataOnInit: true },
+  ({ key, value }) => {},
+];
 const SettingsContext = createContext(defaultValue);
 
 /**
