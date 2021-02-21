@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, ToastAndroid } from "react-native";
 import csvToJson from "csvtojson";
 
 export interface iGoogleFinanceStockData {
@@ -42,10 +42,10 @@ export default class GoogleFinanceAPI {
           AsyncStorage.setItem(formattedStock.Symbol, JSON.stringify(formattedStock));
         })
       );
-      alert("Valores atualizados.");
+      ToastAndroid.show("Valores atualizados.", 10);
     } catch (error) {
       console.dir(error);
-      alert("Erro ao obter dados do Google Finance.");
+      ToastAndroid.show("Erro ao obter dados do Google Finance.", 10);
     } finally {
       setIsLoading(false);
     }

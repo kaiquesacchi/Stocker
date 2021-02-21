@@ -1,5 +1,5 @@
 import React, { createContext, Reducer, useContext, useReducer } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, ToastAndroid } from "react-native";
 import { ThemeProvider, DefaultTheme } from "styled-components/native";
 import Dark from "./dark";
 import Light from "./light";
@@ -50,6 +50,6 @@ export async function LoadSavedTheme([_theme, themeName, setTheme]: typeThemeCon
     })
     .catch((error) => {
       console.error(error);
-      alert("Não foi possível carregar o tema salvo.");
+      ToastAndroid.show("Não foi possível carregar o tema salvo.", 10);
     });
 }

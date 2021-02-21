@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch } from "react-native";
+import { Switch, ToastAndroid } from "react-native";
 
 import useTheme from "../../context/Theme";
 import useSettings from "../../context/Settings";
@@ -19,11 +19,11 @@ export default function Settings() {
 
   const handleEdit = () => {
     if (GoogleFinanceURL.length === 0) {
-      alert("Valor obrigatório.");
+      ToastAndroid.show("Valor obrigatório.", 10);
       return;
     }
     setSettings({ key: "GoogleFinanceURL", value: GoogleFinanceURL });
-    alert("Valor atualizado.");
+    ToastAndroid.show("Valor atualizado.", 10);
 
     setModalVisible(false);
   };

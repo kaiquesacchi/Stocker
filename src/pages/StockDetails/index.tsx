@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-native";
 
-import { Button, Dimensions, TextInput, View } from "react-native";
+import { Button, Dimensions, TextInput, ToastAndroid, View } from "react-native";
 import SwitchSelector from "react-native-switch-selector";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { LineChart } from "react-native-chart-kit";
@@ -72,9 +72,9 @@ export default function StockDetails({ match }: any) {
           "Baixa do Dia": result.Low !== null ? "R$" + CurrencyService.toReadable(result.Low) : "Não Disponível",
         });
       } catch (e) {
-        if (e === "Stock not found.") alert("Ação não encontrada.");
+        if (e === "Stock not found.") ToastAndroid.show("Ação não encontrada.", 10);
         else {
-          alert("Erro desconhecido.");
+          ToastAndroid.show("Erro desconhecido.", 10);
           console.warn(e);
         }
         history.goBack();
@@ -132,7 +132,7 @@ export default function StockDetails({ match }: any) {
   const handleSaveTrade = () => {
     let parsedAmount = Number(amount.replace(",", "."));
     if (isNaN(parsedAmount) || parsedAmount < 0) {
-      alert('"Quantidade" deve ser um valor numérico positivo.');
+      ToastAndroid.show('"Quantidade" deve ser um valor numérico positivo.', 10);
       inputAmount.current?.focus();
       return;
     }
@@ -140,16 +140,16 @@ export default function StockDetails({ match }: any) {
 
     let parsedPrice = Number(price.replace(",", "."));
     if (isNaN(parsedPrice) || parsedPrice < 0) {
-      alert('"Preço" deve ser um valor numérico positivo.');
+      ToastAndroid.show('"Preço" deve ser um valor numérico positivo.', 10);
       inputPrice.current?.focus();
       return;
     }
     MyWalletController.addTrade(data.Symbol, parsedAmount, parsedPrice, date)
       .then(() => {
-        alert("Registro realizado.");
+        ToastAndroid.show("Registro realizado.", 10);
         loadOnWallet(data.Symbol);
       })
-      .catch(() => alert("Erro ao salvar transação"))
+      .catch(() => ToastAndroid.show("Erro ao salvar transação", 10))
       .finally(() => setModalVisible(false));
   };
   //#endregion
@@ -181,7 +181,7 @@ export default function StockDetails({ match }: any) {
         loadOnWallet(data.Symbol);
       })
       .catch((error) => {
-        alert("Erro ao salvar transação");
+        ToastAndroid.show("Erro ao remover transação", 10);
         console.dir(error);
       })
       .finally(() => {
