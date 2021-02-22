@@ -1,12 +1,73 @@
 # Stocker
 
-Stocker lets you keep track of your investments, as well of the stocks in your interest.
+Stocker lets you keep track of your investments and the stocks in your interest.
 
 > Design based on [Samsung's One UI](http://design.samsung.com/global/contents/one-ui/download/oneui_design_guide_eng.pdf)
 
-> Developed using React Native and Expo
+> Developed using [React Native](https://reactnative.dev/) and [Expo](https://expo.io/)
 
-> Market data acquired from the Google Finance API
+> Market data acquired from the [Google Finance API](https://support.google.com/docs/answer/3093281?hl=en)
+
+# Features
+
+Stocker comes packed with handful features for everyday use:
+
+## Track your stocks' performances
+
+<p float="left">
+    <img src="images/App/MyWallet.jpg" width="250px"/>
+    <img src="gifs/StocksPerformances.gif" width="250px"/>
+</p>
+
+## Compare your wallet's earnings to the most relevant Indexes
+
+<p float="left">
+    <img src="images/App/HomeDark.jpg" width="250px"/>
+    <img src="images/App/HomeLight.jpg" width="250px"/>
+</p>
+
+## Search through all available stocks
+
+<p float="left">
+    <img src="gifs/SearchStocks.gif" width="250px"/>
+
+</p>
+
+## Add stocks to your wallet, keeping track of all of your trades
+
+<p float="left">
+    <img src="gifs/AddStocks.gif" width="250px"/>
+</p>
+
+## Choose the interface theme that best suits you
+
+<p float="left">
+    <img src="gifs/Theming.gif" width="250px"/>
+</p>
+
+# Usage
+
+## Google Finance API Setup
+
+To be able to get data from Google Finance API, it must be exported from a Google Sheets spreadsheet.
+
+> As stated on their online forum, direct calls (bypassing Google Sheets) will no longer be supported in the near future.
+
+To create and publish the required file, follow those instructions:
+
+1. Download the `docs/Stocks.xlsx` file from this repository.
+2. Upload it to your Google Drive.
+   ![Upload to Google Drive](images/GoogleFinanceAPI-Setup/GoogleDrive.png)
+
+3. Open the uploaded file and select **_File > Publish to the web_**.
+4. On the pop-up menu, change from **_Web Page_** to **_Comma-separated values (.csv)_**.
+   ![Publish to Web](images/GoogleFinanceAPI-Setup/PublishToWeb.png)
+5. Hit **_Publish_** and copy the link provided.
+6. Create a `./env` file and add the link as shown below.
+
+```js
+GOOGLE_FINANCE_URL = "<Paste_link_here>";
+```
 
 # Development Environment
 
@@ -57,7 +118,7 @@ The app will be started in the emulated (or plugged) device.
 
 Before setting up the debugger, make sure to have the development environment up and running.
 
-> Also, turn off the Remote Debbuging option on the Expo Develpment Tool.
+> Also, turn off the Remote Debbuging option on the Expo Development Tool.
 
 1. Install the `React Native Tools` VSCode extension.
 2. Open the VSCode Debug menu and select `create a launch.json file`.
